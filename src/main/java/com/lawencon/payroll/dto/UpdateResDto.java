@@ -1,15 +1,15 @@
 package com.lawencon.payroll.dto;
 
-public class InsertResDto {
-    private Long id;
+public class UpdateResDto {
+    private Integer vers;
     private String message;
 
-    public Long getId() {
-        return id;
+    public Integer getVers() {
+        return vers;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setVers(Integer vers) {
+        this.vers = vers;
     }
 
     public String getMessage() {
@@ -19,4 +19,5 @@ public class InsertResDto {
     public void setMessage(String message) {
         this.message = message;
     }
+
 }
