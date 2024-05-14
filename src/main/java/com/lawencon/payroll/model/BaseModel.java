@@ -23,13 +23,13 @@ public class BaseModel {
 	private String id;
 
 	@Column(name = "created_by", nullable = false)
-	private Long createdBy;
+	private String createdBy;
 
 	@Column(name = "created_at", nullable = false)
 	private LocalDateTime createdAt;
 
 	@Column(name = "updated_by")
-	private Long updatedBy;
+	private String updatedBy;
 
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
