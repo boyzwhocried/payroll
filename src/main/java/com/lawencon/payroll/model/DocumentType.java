@@ -15,6 +15,6 @@ public class DocumentType extends BaseModel {
     @Column(name = "document_type_code", unique = true, nullable = false)
 	private String documentTypeCode;
 	
-	@Column(name = "document_type_name", nullable = false)
+	@Column(name = "document_type_name", unique = true, nullable = false)
 	private String documentTypeName;
 }
