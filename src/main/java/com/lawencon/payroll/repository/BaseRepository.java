@@ -14,6 +14,4 @@ public interface BaseRepository <T,ID> extends JpaRepository<T, ID> {
 
     @NonNull
     <S extends T> S save(@NonNull S entity);
-
-    List<T> getAll(T entity);
 }
