@@ -6,11 +6,11 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.lawencon.payroll.model.User;
+import com.lawencon.payroll.model.Schedule;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String>
+public interface ScheduleRepository extends JpaRepository<Schedule, String>
 {
-  List<User> findAll(User user);
-  Optional<User> findById(String id);
+  List<Schedule> getAll(Schedule schedule);
+  Optional<Schedule> findById(String id);
 }
