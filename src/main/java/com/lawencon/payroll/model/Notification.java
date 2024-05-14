@@ -2,6 +2,7 @@ package com.lawencon.payroll.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -18,7 +19,7 @@ public class Notification extends BaseModel {
     private String subject;
 
     @ManyToOne
-    @Column(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User userId;
 
     @Column(nullable = false)
