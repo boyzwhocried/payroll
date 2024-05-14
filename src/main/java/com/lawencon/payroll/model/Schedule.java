@@ -20,7 +20,7 @@ public class Schedule extends BaseModel {
     @Column(name = "client_assignment_id", nullable = false)
     private ClientAssignment clientAssignmentId;
 
-    @Column(name = "payroll_date", nullable = false)
+    @Column(name = "payroll_date")
     private LocalDateTime payrollDate;
 
     @Column(name = "schedule_request_type_id", nullable = false)
