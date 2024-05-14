@@ -23,6 +23,6 @@ public class Schedule extends BaseModel {
     @Column(name = "payroll_date", nullable = false)
     private LocalDateTime payrollDate;
 
-    @Column(name = "last_file_upload_date", nullable = false)
-    private LocalDateTime lastFileUploadDate;
+    @Column(name = "schedule_request_type_id", nullable = false)
+    private ScheduleRequestType scheduleRequestTypeId;
 }
