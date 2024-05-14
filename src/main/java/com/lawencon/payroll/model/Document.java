@@ -22,6 +22,13 @@ public class Document extends BaseModel {
     @Column(name = "document_type_id", nullable = false)
     private DocumentType documentTypeId;
 
+    @Column(nullable = false)
+    private String activity;
+
+    @ManyToOne
+    @Column(name = "schedule_id", nullable = false)
+    private Schedule scheduleId;
+
     @Column(name = "is_signed_by_sender", nullable = false)
     private Boolean isSignedBySender;
 
