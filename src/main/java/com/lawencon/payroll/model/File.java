@@ -12,6 +12,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "t_m_file")
 public class File extends BaseModel {
-    @Column(nullable = false)
-	private String directory;
+    @Column(name = "file_directory", nullable = false)
+	private String fileDirectory;
 }
