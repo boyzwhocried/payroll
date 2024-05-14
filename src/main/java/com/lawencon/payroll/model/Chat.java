@@ -2,6 +2,7 @@ package com.lawencon.payroll.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -15,4 +16,8 @@ public class Chat extends BaseModel {
 
     @Column(nullable = false)
     private String message;
+
+    @ManyToOne
+    @Column(name = "recipient_id", nullable = false)
+    private User recipientId;
 }
