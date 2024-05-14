@@ -2,6 +2,7 @@ package com.lawencon.payroll.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -23,10 +24,10 @@ public class User extends BaseModel {
     private String password;
 
     @ManyToOne
-    @Column(name = "profile_picture_id", nullable = false)
+    @JoinColumn(name = "profile_picture_id", nullable = false)
     private File profilePictureId;
 
     @ManyToOne
-    @Column(name = "role_id", nullable = false)
+    @JoinColumn(name = "role_id", nullable = false)
     private Role roleId;
 }

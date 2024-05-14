@@ -6,7 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class LoginResDto {
-    private Long userId;
+    private String userId;
     private String userName;
     private String roleCode;
     private String fileId;
