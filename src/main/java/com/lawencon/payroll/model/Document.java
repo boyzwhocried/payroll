@@ -15,7 +15,7 @@ import lombok.Setter;
 public class Document extends BaseModel {
 
     @ManyToOne
-    @Column(name = "file_id", nullable = false)
+    @Column(name = "file_id")
     private File fileId;
 
     @ManyToOne
