@@ -1,16 +1,12 @@
 package com.lawencon.payroll.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.model.Document;
-import com.lawencon.payroll.model.DocumentType;
-import com.lawencon.payroll.model.File;
-import com.lawencon.payroll.model.Schedule;
 import com.lawencon.payroll.repository.DocumentRepository;
 import com.lawencon.payroll.repository.DocumentTypeRepository;
 import com.lawencon.payroll.service.DocumentService;
@@ -30,19 +26,16 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public InsertResDto createDocument(List<DocumentReqDto> data) {
-        final InsertResDto insertRes = new InsertResDto();
+        final var insertRes = new InsertResDto();
 
-        final int size = data.size();
-        for(int i=0;i<size;i++) {
-            final DocumentReqDto documentReq = data.get(i);
+        data.forEach(documentReq -> {
+            final var file = fileService.loadById(documentReq.getFileId());
 
-            final File file = fileService.loadById(documentReq.getFileId());
+            final var documentType = documentTypeRepository.findById(documentReq.getDocumentTypeId());
 
-            final Optional<DocumentType> documentType = documentTypeRepository.findById(documentReq.getDocumentTypeId());
+            final var schedule = scheduleService.loadById(documentReq.getScheduleId());
 
-            final Schedule schedule = scheduleService.loadById(documentReq.getScheduleId());
-
-            Document document = new Document();
+            var document = new Document();
             document.setFileId(file);
             document.setDocumentTypeId(documentType.get());
 
@@ -54,7 +47,7 @@ public class DocumentServiceImpl implements DocumentService {
             document.setIsSignedByReceiver(false);
 
             document = documentRepository.save(document);
-        }
+        });
         
         insertRes.setId(null);
         insertRes.setMessage("Document(s) have been made!");

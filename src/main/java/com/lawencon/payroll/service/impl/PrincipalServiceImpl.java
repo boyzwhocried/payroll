@@ -1,6 +1,5 @@
 package com.lawencon.payroll.service.impl;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +10,8 @@ public class PrincipalServiceImpl implements PrincipalService {
 
     @Override
     public String getUserId() {
-        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		final Object userAuth = auth.getPrincipal();
+        final var auth = SecurityContextHolder.getContext().getAuthentication();
+		final var userAuth = auth.getPrincipal();
 		return userAuth.toString();
     }
 
