@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -19,7 +18,8 @@ import lombok.Setter;
 @Getter
 @MappedSuperclass
 public class BaseModel {
-    @Id
+	@Id
+	@GeneratedValue()
 	private String id;
 
 	@Column(name = "created_by", nullable = false)

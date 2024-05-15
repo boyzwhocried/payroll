@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.lawencon.payroll.dto.scheduleRequestServiceImpl.ScheduleRequestTypeResDto;
+import com.lawencon.payroll.dto.scheduleRequestService.ScheduleRequestTypeResDto;
 import com.lawencon.payroll.model.ScheduleRequestType;
 import com.lawencon.payroll.repository.ScheduleRequestTypeRepository;
 import com.lawencon.payroll.service.ScheduleRequestService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ScheduleRequestServiceImpl implements ScheduleRequestService{
 
-  @Autowired
   private ScheduleRequestTypeRepository scheduleRequestTypeRepository;
 
   @Override
