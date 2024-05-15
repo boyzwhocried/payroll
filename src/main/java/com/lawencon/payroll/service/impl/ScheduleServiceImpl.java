@@ -18,7 +18,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule loadById(String id) {
-        final Optional<Schedule> schedule = scheduleRepository.findById(id);
+        final var schedule = scheduleRepository.findById(id);
         return schedule.get();
     }
 

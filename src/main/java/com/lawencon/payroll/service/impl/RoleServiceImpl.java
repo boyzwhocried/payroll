@@ -49,7 +49,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getById(String id) {
-        final Optional<Role> role = roleRepository.findById(id);
+        final var role = roleRepository.findById(id);
         return role.get();
     }
 
