@@ -3,8 +3,6 @@ package com.lawencon.payroll.service.impl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -55,8 +53,6 @@ public class UserServiceImpl implements UserService {
         final String email = data.getEmail();
         final Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
 
-        final Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
-
         final Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.HOUR_OF_DAY, 1);
@@ -68,9 +64,7 @@ public class UserServiceImpl implements UserService {
         final String token = jwtService.generateJwt(claims);
 
         final Role role = user.get().getRoleId();
-        final Role role = user.get().getRoleId();
 
-        final File file = user.get().getProfilePictureId();
         final File file = user.get().getProfilePictureId();
 
         loginRes.setUserId(user.get().getId());
