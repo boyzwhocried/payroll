@@ -4,4 +4,6 @@ import com.lawencon.payroll.model.File;
 
 public interface FileService {
     File saveFile(String directory);
+
+    File loadById(String id);
 }

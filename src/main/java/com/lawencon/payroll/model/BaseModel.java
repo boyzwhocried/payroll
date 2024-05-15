@@ -19,7 +19,6 @@ import lombok.Setter;
 @MappedSuperclass
 public class BaseModel {
 	@Id
-	@GeneratedValue()
 	private String id;
 
 	@Column(name = "created_by", nullable = false)
