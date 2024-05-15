@@ -1,7 +1,5 @@
 package com.lawencon.payroll.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.model.Schedule;

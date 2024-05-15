@@ -1,7 +1,5 @@
 package com.lawencon.payroll.service.impl;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;

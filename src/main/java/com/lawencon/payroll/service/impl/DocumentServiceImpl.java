@@ -1,16 +1,12 @@
 package com.lawencon.payroll.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.dto.InsertResDto;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.model.Document;
-import com.lawencon.payroll.model.DocumentType;
-import com.lawencon.payroll.model.File;
-import com.lawencon.payroll.model.Schedule;
 import com.lawencon.payroll.repository.DocumentRepository;
 import com.lawencon.payroll.repository.DocumentTypeRepository;
 import com.lawencon.payroll.service.DocumentService;
