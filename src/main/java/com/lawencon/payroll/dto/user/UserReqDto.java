@@ -9,4 +9,5 @@ public class UserReqDto {
     private String fullName;
     private String email;
     private String roleId;
+    private String fileDirectory;
 }

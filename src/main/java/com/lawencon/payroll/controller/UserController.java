@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.payroll.dto.InsertResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
+import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,5 +37,11 @@ public class UserController {
 
         final LoginResDto loginRes = userService.loginUser(data);
         return new ResponseEntity<>(loginRes, HttpStatus.OK);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<InsertResDto> createUser(@RequestBody UserReqDto data) {
+        final InsertResDto insertRes = userService.createUser(data);
+        return new ResponseEntity<>(insertRes, HttpStatus.CREATED);
     }
 }

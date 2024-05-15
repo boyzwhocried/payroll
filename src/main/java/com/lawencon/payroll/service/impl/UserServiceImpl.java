@@ -1,21 +1,33 @@
 package com.lawencon.payroll.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.lawencon.payroll.dto.InsertResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
+import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.model.File;
 import com.lawencon.payroll.model.Role;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
+import com.lawencon.payroll.service.FileService;
 import com.lawencon.payroll.service.JwtService;
+import com.lawencon.payroll.service.PrincipalService;
+import com.lawencon.payroll.service.RoleService;
 import com.lawencon.payroll.service.UserService;
+import com.lawencon.payroll.util.GenerateUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,9 +35,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final PasswordEncoder passwordEncoder;
+
     private final UserRepository userRepository;
 
+    private final FileService fileService;
     private final JwtService jwtService;
+    private final PrincipalService principalService;
+    private final RoleService roleService;
 
     @Override
     public LoginResDto loginUser(LoginReqDto data) {
@@ -33,18 +50,24 @@ public class UserServiceImpl implements UserService {
 
         final String email = data.getEmail();
 
-        final User user = userRepository.findByEmail(email);
+        final Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
+
+        final Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.HOUR_OF_DAY, 1);
 
         final Map<String, Object> claims = new HashMap<>();
+        claims.put("exp", cal.getTime());
+        claims.put("id", user.get().getId());
 
         final String token = jwtService.generateJwt(claims);
 
-        final Role role = user.getRoleId();
+        final Role role = user.get().getRoleId();
 
-        final File file = user.getProfilePictureId();
+        final File file = user.get().getProfilePictureId();
 
-        loginRes.setUserId(user.getId());
-        loginRes.setUserName(user.getFullName());
+        loginRes.setUserId(user.get().getId());
+        loginRes.setUserName(user.get().getFullName());
         loginRes.setRoleCode(role.getRoleCode());
         loginRes.setToken(token);
 
@@ -64,5 +87,30 @@ public class UserServiceImpl implements UserService {
 		}
 		throw new UsernameNotFoundException("Invalid input!");
 	}
+
+    @Override
+    @Transactional
+    public InsertResDto createUser(UserReqDto data) {
+        final InsertResDto insertRes = new InsertResDto();
+
+        final String rawPassword = GenerateUtil.generateCode();
+        final String password = passwordEncoder.encode(rawPassword);
+
+        User user = new User();
+
+        user.setEmail(data.getEmail());
+        user.setFullName(data.getFullName());
+        user.setPassword(password);
+        user.setRoleId(roleService.getById(data.getRoleId()));
+        user.setProfilePictureId(fileService.saveFile(data.getFileDirectory()));
+        user.setCreatedBy(principalService.getUserId());
+
+        user = userRepository.save(user);
+
+        insertRes.setId(user.getId());
+        insertRes.setMessage("User has been created");
+
+        return insertRes;
+    }
 
 }
