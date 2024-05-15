@@ -1,19 +1,26 @@
 package com.lawencon.payroll.service.impl;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
+
 import com.lawencon.payroll.dto.clientAssignment.ClientAssignmentReqDto;
 import com.lawencon.payroll.dto.clientAssignment.ClientAssignmentResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.model.ClientAssignment;
 import com.lawencon.payroll.repository.ClientAssignmentRepository;
+import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.ClientAssignmentService;
+import com.lawencon.payroll.service.PrincipalService;
 
 import lombok.RequiredArgsConstructor;
 
+@Service
 @RequiredArgsConstructor
 public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
 
   private ClientAssignmentRepository clientAssignmentRepository;
+  private UserRepository userRepository;
+  private PrincipalService principalService;
 
   @Override
   public ClientAssignmentResDto getById(String id) {
@@ -40,9 +47,17 @@ public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
     final var clientId = clientAssignmentReq.getClientId();
     final var payrollServiceId = clientAssignmentReq.getPsId(); 
 
+    final var client = userRepository.findById(clientId);
+    final var payrollService = userRepository.findById(payrollServiceId);
 
-    clientAssignment.setClient(null);
-    clientAssignment.setPayrollService(null);
+    clientAssignment.setClient(client.get());
+    clientAssignment.setPayrollService(payrollService.get());
+    clientAssignment.setCreatedBy(principalService.getUserId());
+
+    final var savedClientAssignment = clientAssignmentRepository.save(clientAssignment);
+
+    insertRes.setId(savedClientAssignment.getId());
+    insertRes.setMessage("Insert Success");
 
     return insertRes;
   }

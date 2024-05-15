@@ -5,8 +5,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.lawencon.payroll.dto.InsertResDto;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
+import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.model.Document;
 import com.lawencon.payroll.model.DocumentType;
 import com.lawencon.payroll.model.File;
