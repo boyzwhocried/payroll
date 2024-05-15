@@ -18,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
 
-  private ClientAssignmentRepository clientAssignmentRepository;
-  private UserRepository userRepository;
-  private PrincipalService principalService;
+  private final ClientAssignmentRepository clientAssignmentRepository;
+  private final UserRepository userRepository;
+  private final PrincipalService principalService;
 
   @Override
   public ClientAssignmentResDto getById(String id) {
