@@ -1,8 +1,11 @@
 package com.lawencon.payroll.service.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,19 +35,24 @@ public class UserServiceImpl implements UserService {
         final LoginResDto loginRes = new LoginResDto();
 
         final String email = data.getEmail();
+        final Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
 
-        final User user = userRepository.findByEmail(email);
+		final Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.HOUR_OF_DAY, 1);
 
         final Map<String, Object> claims = new HashMap<>();
+		claims.put("exp", cal.getTime());
+		claims.put("id", user.get().getId());
 
         final String token = jwtService.generateJwt(claims);
 
-        final Role role = user.getRoleId();
+        final Role role = user.get().getRoleId();
 
-        final File file = user.getProfilePictureId();
+        final File file = user.get().getProfilePictureId();
 
-        loginRes.setUserId(user.getId());
-        loginRes.setUserName(user.getFullName());
+        loginRes.setUserId(user.get().getId());
+        loginRes.setUserName(user.get().getFullName());
         loginRes.setRoleCode(role.getRoleCode());
         loginRes.setToken(token);
 
