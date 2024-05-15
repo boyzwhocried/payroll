@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -18,8 +17,6 @@ import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
-import com.lawencon.payroll.model.File;
-import com.lawencon.payroll.model.Role;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.EmailService;
@@ -48,24 +45,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResDto loginUser(LoginReqDto data) {
-        final LoginResDto loginRes = new LoginResDto();
+        final var loginRes = new LoginResDto();
 
-        final String email = data.getEmail();
+        final var email = data.getEmail();
         final Optional<User> user = Optional.ofNullable(userRepository.findByEmail(email));
 
-        final Calendar cal = Calendar.getInstance();
+        final var cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.HOUR_OF_DAY, 1);
 
-        final Map<String, Object> claims = new HashMap<>();
+        final var claims = new HashMap<String, Object>();
         claims.put("exp", cal.getTime());
         claims.put("id", user.get().getId());
 
-        final String token = jwtService.generateJwt(claims);
+        final var token = jwtService.generateJwt(claims);
 
-        final Role role = user.get().getRoleId();
+        final var role = user.get().getRoleId();
 
-        final File file = user.get().getProfilePictureId();
+        final var file = user.get().getProfilePictureId();
 
         loginRes.setUserId(user.get().getId());
         loginRes.setUserName(user.get().getFullName());
@@ -83,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		final User user = userRepository.findByEmail(email);
+		final var user = userRepository.findByEmail(email);
 		if (user != null) {
 			return new org.springframework.security.core.userdetails.User(email, user.getPassword(),
 					new ArrayList<>());
@@ -94,15 +91,15 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public InsertResDto createUser(UserReqDto data) {
-        final InsertResDto insertRes = new InsertResDto();
+        final var insertRes = new InsertResDto();
 
-        final String rawPassword = GenerateUtil.generateCode();
-        final String password = passwordEncoder.encode(rawPassword);
+        final var rawPassword = GenerateUtil.generateCode();
+        final var password = passwordEncoder.encode(rawPassword);
 
-        User user = new User();
-        final Role role = roleService.getById(data.getRoleId());
+        var user = new User();
+        final var role = roleService.getById(data.getRoleId());
 
-        final String email = data.getEmail();
+        final var email = data.getEmail();
 
         user.setFullName(data.getFullName());
         user.setEmail(email);
@@ -113,9 +110,9 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
         
-        final String subject = "New User Information";
+        final var subject = "New User Information";
 
-        final String body = "Hello" + role.getRoleName() + "!\n"
+        final var body = "Hello" + role.getRoleName() + "!\n"
                             + "Here's your email and password :"
                             + "Email : " + email + "\n"
                             + "Password : " + rawPassword + "\n";
@@ -124,7 +121,7 @@ public class UserServiceImpl implements UserService {
             emailService.sendEmail(email, subject, body);
         };
 
-        final Thread mailThread = new Thread(runnable);
+        final var mailThread = new Thread(runnable);
         mailThread.start();
 
         insertRes.setId(user.getId());

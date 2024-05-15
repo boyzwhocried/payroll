@@ -1,7 +1,5 @@
 package com.lawencon.payroll.service.impl;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.model.Schedule;
@@ -18,7 +16,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule loadById(String id) {
-        final Optional<Schedule> schedule = scheduleRepository.findById(id);
+        final var schedule = scheduleRepository.findById(id);
         return schedule.get();
     }
 
