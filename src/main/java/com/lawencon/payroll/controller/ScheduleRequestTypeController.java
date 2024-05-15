@@ -18,10 +18,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("schedule-request-types")
 public class ScheduleRequestTypeController {
   private final ScheduleRequestService scheduleRequestService;
-  
+
   @GetMapping("")
   public ResponseEntity<List<ScheduleRequestTypeResDto>> getAllScheduleRequestType() {
-    final List<ScheduleRequestTypeResDto> scheduleRequestTypeRes = scheduleRequestService.getAll();
+    final var scheduleRequestTypeRes = scheduleRequestService.getAll();
 
     return new ResponseEntity<>(scheduleRequestTypeRes, HttpStatus.OK);
   }
