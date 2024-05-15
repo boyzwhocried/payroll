@@ -22,6 +22,7 @@ import com.lawencon.payroll.model.File;
 import com.lawencon.payroll.model.Role;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
+import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.FileService;
 import com.lawencon.payroll.service.JwtService;
 import com.lawencon.payroll.service.PrincipalService;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final EmailService emailService;
     private final FileService fileService;
     private final JwtService jwtService;
     private final PrincipalService principalService;
@@ -97,15 +99,32 @@ public class UserServiceImpl implements UserService {
         final String password = passwordEncoder.encode(rawPassword);
 
         User user = new User();
+        final Role role = roleService.getById(data.getRoleId());
 
-        user.setEmail(data.getEmail());
+        final String email = data.getEmail();
+
         user.setFullName(data.getFullName());
+        user.setEmail(email);
         user.setPassword(password);
-        user.setRoleId(roleService.getById(data.getRoleId()));
+        user.setRoleId(role);
         user.setProfilePictureId(fileService.saveFile(data.getFileDirectory()));
         user.setCreatedBy(principalService.getUserId());
 
         user = userRepository.save(user);
+        
+        final String subject = "New User Information";
+
+        final String body = "Hello" + role.getRoleName() + "!\n"
+                            + "Here's your email and password :"
+                            + "Email : " + email + "\n"
+                            + "Password : " + rawPassword + "\n";
+
+        final Runnable runnable = () -> {
+            emailService.sendEmail(email, subject, body);
+        };
+
+        final Thread mailThread = new Thread(runnable);
+        mailThread.start();
 
         insertRes.setId(user.getId());
         insertRes.setMessage("User has been created");
