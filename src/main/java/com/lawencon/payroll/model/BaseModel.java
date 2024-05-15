@@ -1,6 +1,7 @@
 package com.lawencon.payroll.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,6 @@ import lombok.Setter;
 @MappedSuperclass
 public class BaseModel {
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
 
 	@Column(name = "created_by", nullable = false)
@@ -43,7 +43,9 @@ public class BaseModel {
 
     @PrePersist
 	private void preInsert() {
+		this.id = UUID.randomUUID().toString();
 		this.createdAt = LocalDateTime.now();
+		this.isActive = true;
 	}
 
 	@PreUpdate
