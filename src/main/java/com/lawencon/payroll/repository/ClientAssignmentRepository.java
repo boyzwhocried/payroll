@@ -6,5 +6,6 @@ import com.lawencon.payroll.model.ClientAssignment;
 
 @Repository
 public interface ClientAssignmentRepository extends BaseRepository<ClientAssignment, String>
-{
+{ 
+
 }
