@@ -15,8 +15,9 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "t_m_company")
-public class Company extends BaseModel{
-  @Column(name = "company_name")
+
+public class Company extends BaseModel {
+  @Column(name = "company_name", nullable = false)
   private String companyName;
 
   @ManyToOne
