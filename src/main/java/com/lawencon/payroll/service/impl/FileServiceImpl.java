@@ -4,10 +4,14 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import com.lawencon.payroll.dto.file.FileDownloadReqDto;
+import com.lawencon.payroll.dto.file.FileReqDto;
+import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.model.File;
 import com.lawencon.payroll.repository.FileRepository;
 import com.lawencon.payroll.service.FileService;
 import com.lawencon.payroll.service.PrincipalService;
+import com.lawencon.payroll.util.FtpUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +44,36 @@ public class FileServiceImpl implements FileService {
     @Transactional
     public File updateFile(File file) {
         return fileRepository.saveAndFlush(file);
+    }
+
+    @Override
+    public InsertResDto uploadFile(FileReqDto data) {
+        final var base64 = data.getBase64();
+        final var extension = data.getExtension();
+        final var remoteFile = data.getRemoteFile();
+
+        FtpUtil.sendFile(base64, remoteFile);
+
+        var file = new File();
+        file.setFileContent(base64);
+        file.setFileExtension(extension);
+        file.setCreatedBy(principalService.getUserId());
+
+        file = fileRepository.save(file);
+
+        final var insertRes = new InsertResDto();
+        insertRes.setId(file.getId());
+        insertRes.setMessage("File has been uploaded");
+        
+        return insertRes;
+    }
+
+    @Override
+    public void downloadFile(FileDownloadReqDto data) {
+        final var remoteFile = data.getRemoteFile();
+        final var downloadFile = data.getDownloadFile();
+
+        FtpUtil.downloadFile(remoteFile, downloadFile);
     }
 
 }
