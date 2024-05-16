@@ -47,22 +47,8 @@ public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
     final var clientId = clientAssignmentReq.getClientId();
     final var payrollServiceId = clientAssignmentReq.getPsId(); 
 
-    System.out.println("Client Id = "+clientId);
-    System.out.println("Payroll Service Id = "+payrollServiceId);
-
     final var client = userRepository.findById(clientId);
     final var payrollService = userRepository.findById(payrollServiceId);
-
-    System.out.println("WOW!");
-    System.out.println("WOW!");
-    System.out.println("WOW!");
-    System.out.println("WOW!");
-    System.out.println("WOW!");
-    System.out.println("WOW!");
-    System.out.println("WOW!");
-    System.out.println("WOW!");
-    System.out.println("WOW!");
-    System.out.println("WOW!");
 
     clientAssignment.setClient(client.get());
     clientAssignment.setPayrollService(payrollService.get());

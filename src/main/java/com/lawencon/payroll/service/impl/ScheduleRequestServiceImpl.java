@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.lawencon.payroll.dto.scheduleRequestService.ScheduleRequestTypeResDto;
+import com.lawencon.payroll.dto.scheduleRequestTypeService.ScheduleRequestTypeResDto;
 import com.lawencon.payroll.model.ScheduleRequestType;
 import com.lawencon.payroll.repository.ScheduleRequestTypeRepository;
 import com.lawencon.payroll.service.ScheduleRequestService;

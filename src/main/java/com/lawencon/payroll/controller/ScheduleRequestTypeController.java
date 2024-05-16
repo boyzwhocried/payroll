@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lawencon.payroll.dto.scheduleRequestService.ScheduleRequestTypeResDto;
+import com.lawencon.payroll.dto.scheduleRequestTypeService.ScheduleRequestTypeResDto;
 import com.lawencon.payroll.service.ScheduleRequestService;
 
 import lombok.RequiredArgsConstructor;

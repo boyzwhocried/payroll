@@ -7,5 +7,6 @@ import lombok.Setter;
 @Getter
 public class ScheduleReqDto {
   private String clientAssignmentId;
+  private String ScheduleRequestTypeId;
   private Float payrollDate;
 }

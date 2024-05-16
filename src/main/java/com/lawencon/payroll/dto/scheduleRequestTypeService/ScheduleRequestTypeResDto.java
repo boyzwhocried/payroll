@@ -1,4 +1,4 @@
-package com.lawencon.payroll.dto.scheduleRequestService;
+package com.lawencon.payroll.dto.scheduleRequestTypeService;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,5 @@
 package com.lawencon.payroll.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,14 +13,11 @@ import lombok.Setter;
 @Entity
 @Table(name = "t_r_notification")
 public class Notification extends BaseModel {
-
-    @Column(nullable = false)
-    private String subject;
+    @ManyToOne
+    @JoinColumn(name = "notification_template_id", nullable = false)
+    private NotificationTemplate notificationTemplate;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
-
-    @Column(nullable = false)
-    private String body;
 }
