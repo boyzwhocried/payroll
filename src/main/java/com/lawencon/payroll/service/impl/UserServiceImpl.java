@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
+import com.lawencon.payroll.dto.user.UserResDto;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.EmailService;
@@ -129,6 +131,26 @@ public class UserServiceImpl implements UserService {
         insertRes.setMessage("User has been created");
 
         return insertRes;
+    }
+
+    @Override
+    public List<UserResDto> getAllUsers() {
+        final var usersRes = new ArrayList<UserResDto>();
+
+        final var users = userRepository.findAll();
+        users.forEach(user -> {
+            final var userRes = new UserResDto();
+
+            userRes.setId(user.getId());
+            userRes.setFullName(user.getFullName());
+            userRes.setEmail(user.getEmail());
+            userRes.setRoleName(user.getRoleId().getRoleName());
+            userRes.setPhoneNumber(user.getPhoneNumber());
+
+            usersRes.add(userRes);
+        });
+
+        return usersRes;
     }
 
 }
