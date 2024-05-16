@@ -5,11 +5,12 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UserReqDto {
-    private String fullName;
+public class UpdateUserReqDto {
+    private String id;
+    private String name;
     private String email;
-    private String phoneNumber;
-    private String roleId;
+    private String password;
+    private String phoneNo;
     private String fileContent;
     private String fileExtension;
 }

@@ -16,10 +16,10 @@ public class ClientAssignment extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "ps_id", nullable = false)
-    private User payrollService;
+    private User psId;
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
-    private User client;
+    private User clientId;
 
 }

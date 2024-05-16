@@ -14,8 +14,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "t_m_user")
 public class User extends BaseModel {
-    @Column(name = "full_name", nullable = false)
-    private String fullName;
+    @Column(name = "user_name", nullable = false)
+    private String userName;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -30,4 +30,7 @@ public class User extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role roleId;
+
+    @Column(name = "phone_no", nullable = false)
+    private String phoneNumber;
 }
