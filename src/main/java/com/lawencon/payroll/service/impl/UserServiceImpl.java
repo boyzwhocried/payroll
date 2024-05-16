@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.lawencon.payroll.constant.Roles;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
@@ -146,6 +147,27 @@ public class UserServiceImpl implements UserService {
         final var usersRes = new ArrayList<UserResDto>();
 
         final var users = userRepository.findAll();
+        users.forEach(user -> {
+            final var userRes = new UserResDto();
+
+            userRes.setId(user.getId());
+            userRes.setFullName(user.getFullName());
+            userRes.setEmail(user.getEmail());
+            userRes.setRoleName(user.getRoleId().getRoleName());
+            userRes.setPhoneNumber(user.getPhoneNumber());
+
+            usersRes.add(userRes);
+        });
+
+        return usersRes;
+    }
+
+    @Override
+    public List<UserResDto> getPayrollServiceUsers() {
+        final var usersRes = new ArrayList<UserResDto>();
+
+        final var users = userRepository.findByRoleRoleCode(Roles.RL002.name());
+        
         users.forEach(user -> {
             final var userRes = new UserResDto();
 

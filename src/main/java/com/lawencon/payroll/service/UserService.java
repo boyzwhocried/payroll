@@ -16,4 +16,6 @@ public interface UserService extends UserDetailsService {
     InsertResDto createUser(UserReqDto data);
 
     List<UserResDto> getAllUsers();
+
+    List<UserResDto> getPayrollServiceUsers();
 }

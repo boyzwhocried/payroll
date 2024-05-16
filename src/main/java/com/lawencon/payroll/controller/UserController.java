@@ -53,4 +53,10 @@ public class UserController {
         final var usersRes = userService.getAllUsers();
         return new ResponseEntity<>(usersRes, HttpStatus.OK);
     }
+
+    @GetMapping("ps")
+    public ResponseEntity<List<UserResDto>> getPayrollServiceUsers() {
+        final var usersRes = userService.getPayrollServiceUsers();
+        return new ResponseEntity<>(usersRes, HttpStatus.OK);
+    }
 }
