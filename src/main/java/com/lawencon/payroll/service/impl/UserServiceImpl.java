@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.constant.Roles;
+import com.lawencon.payroll.dto.generalResponse.DeleteResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
@@ -181,6 +182,16 @@ public class UserServiceImpl implements UserService {
         });
 
         return usersRes;
+    }
+
+    @Override
+    public DeleteResDto deleteUserById(String id) {
+        userRepository.deleteById(id);
+        
+        final var deleteRes = new DeleteResDto();
+
+        deleteRes.setMessage("User has been deleted!");
+        return deleteRes;
     }
 
 }
