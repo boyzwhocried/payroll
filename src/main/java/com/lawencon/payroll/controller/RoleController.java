@@ -22,7 +22,7 @@ public class RoleController {
 
     @GetMapping("")
     public ResponseEntity<List<RoleResDto>> getUserCreationRoles() {
-        final List<RoleResDto> roles = roleService.getRolesExcept();
+        final var roles = roleService.getRolesExcept();
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 }

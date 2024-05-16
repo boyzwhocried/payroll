@@ -34,7 +34,7 @@ public class ClientAssignmentController {
   public ResponseEntity<InsertResDto> saveClientAssignment(
     @RequestBody ClientAssignmentReqDto clientAssignmentReqDto
   ) {
-    final InsertResDto insertRes = clientAssignmentService.saveClientAssignment(clientAssignmentReqDto);
+    final var insertRes = clientAssignmentService.saveClientAssignment(clientAssignmentReqDto);
 
     return new ResponseEntity<>(insertRes, HttpStatus.CREATED);
   }
