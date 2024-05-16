@@ -2,11 +2,13 @@ package com.lawencon.payroll.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.dto.document.DocumentReqDto;
+import com.lawencon.payroll.dto.document.DocumentResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.model.Document;
 import com.lawencon.payroll.repository.DocumentRepository;
@@ -53,6 +55,33 @@ public class DocumentServiceImpl implements DocumentService {
         insertRes.setId(null);
         insertRes.setMessage("Document(s) have been made!");
         return insertRes;
+    }
+
+    @Override
+    public List<DocumentResDto> getDocumentsByScheduleId(String scheduleId) {
+        final var documentsRes = new ArrayList<DocumentResDto>();
+        final var documents = documentRepository.getByScheduleId(scheduleId);
+        
+        documents.forEach(document -> {
+            final var documentRes = new DocumentResDto();
+
+            final var id = document.getId();
+            final var activity = document.getActivity();
+            final var deadline = document.getDocumentDeadline().toString();
+            final var directory = document.getDocumentDirectory();
+            final var name = document.getDocumentName();
+
+            final var documentTypeId = document.getDocumentType().getId();
+            
+            documentRes.setDocumentId(id);
+            documentRes.setActivity(activity);
+            documentRes.setDocumentDeadline(deadline);
+            documentRes.setDocumentDirectory(directory);
+            documentRes.setDocumentName(name);
+            documentRes.setDocumentTypeId(documentTypeId);
+        });
+
+        return documentsRes;
     }
 
 }
