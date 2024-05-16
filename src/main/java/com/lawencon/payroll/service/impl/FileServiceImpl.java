@@ -24,7 +24,7 @@ public class FileServiceImpl implements FileService {
         final var newFile = new File();
 
         file.setFileContent(file.getFileContent());
-        file.setFileContent(file.getFileExtension());
+        file.setFileExtension(file.getFileExtension());
         file.setCreatedBy(principalService.getUserId());
         
         return fileRepository.save(newFile);
