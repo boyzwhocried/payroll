@@ -16,10 +16,10 @@ import lombok.Setter;
 @Entity
 @Table(name = "t_r_document")
 public class Document extends BaseModel {
-    @Column(name = "document_name", nullable = false)
+    @Column(name = "document_name")
     private String documentName;
     
-    @Column(name = "document_directory", nullable = false)
+    @Column(name = "document_directory")
     private String documentDirectory;
 
     @ManyToOne
@@ -36,9 +36,9 @@ public class Document extends BaseModel {
     @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
-    @Column(name = "is_signed_by_sender", nullable = false)
+    @Column(name = "is_signed_by_sender")
     private Boolean isSignedBySender;
 
-    @Column(name = "is_signed_by_receiver", nullable = false)
+    @Column(name = "is_signed_by_receiver")
     private Boolean isSignedByReceiver;
 }

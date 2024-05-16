@@ -40,10 +40,8 @@ public class DocumentServiceImpl implements DocumentService {
 
             var document = new Document();
             document.setDocumentType(documentType.get());
-            document.setDocumentName(documentReq.getDocumentName());
             document.setDocumentDeadline(LocalDateTime.parse(documentReq.getDocumentDeadline(), formatter));
             document.setActivity(documentReq.getActivity());
-            document.setDocumentDirectory(documentReq.getDocumentDirectory());
             document.setSchedule(schedule);
             document.setIsSignedBySender(false);
             document.setIsSignedByReceiver(false);

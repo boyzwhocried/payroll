@@ -28,10 +28,17 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @PostMapping()
-    public ResponseEntity<InsertResDto> createDocuments(@RequestBody List<DocumentReqDto> data) {
+    public ResponseEntity<InsertResDto> createDocumentsSchedule(@RequestBody List<DocumentReqDto> data) {
         final var insertRes = documentService.createDocuments(data);
         return new ResponseEntity<>(insertRes, HttpStatus.CREATED);
     }
+
+    // @PostMapping("new")
+    // public ResponseEntity<InsertResDto> insertDocument(@RequestBody DocumentReqDto data) {
+    //     final var insertRes = documentService.createDocuments(data);
+
+    //     return new ResponseEntity<>(insertRes, HttpStatus.CREATED);
+    // }
 
     @GetMapping("{scheduleId}")
     public ResponseEntity<List<DocumentResDto>> getDocumentSchedule(@PathVariable String scheduleId) {
