@@ -1,5 +1,7 @@
 package com.lawencon.payroll.dto.user;
 
+import com.lawencon.payroll.dto.company.CompanyReqDto;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,4 +14,5 @@ public class UserReqDto {
     private String roleId;
     private String fileContent;
     private String fileExtension;
+    private CompanyReqDto companyReq;
 }
