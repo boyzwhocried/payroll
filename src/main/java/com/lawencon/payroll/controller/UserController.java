@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.payroll.dto.generalResponse.DeleteResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
+import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
+import com.lawencon.payroll.dto.user.UpdateUserReqDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.dto.user.UserResDto;
 import com.lawencon.payroll.service.UserService;
@@ -73,6 +76,12 @@ public class UserController {
     public ResponseEntity<List<UserResDto>> getNotAssignedPayrollService(@PathVariable String id) {
         final var usersRes = userService.getAllUsersByPsIdExcept(id);
         return new ResponseEntity<>(usersRes, HttpStatus.OK);
+    }
+
+    @PatchMapping("")
+    public ResponseEntity<UpdateResDto> updateUser(@RequestBody UpdateUserReqDto data) {
+        final var updateRes = userService.updateUser(data);
+        return new ResponseEntity<>(updateRes, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")

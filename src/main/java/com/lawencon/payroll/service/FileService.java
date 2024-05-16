@@ -6,4 +6,6 @@ public interface FileService {
     File saveFile(File file);
 
     File loadById(String id);
+
+    File updateFile(File file);
 }

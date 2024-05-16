@@ -36,4 +36,10 @@ public class FileServiceImpl implements FileService {
         return file.get();
     }
 
+    @Override
+    @Transactional
+    public File updateFile(File file) {
+        return fileRepository.saveAndFlush(file);
+    }
+
 }
