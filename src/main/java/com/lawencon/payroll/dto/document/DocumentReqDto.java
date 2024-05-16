@@ -6,7 +6,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class DocumentReqDto {
-    private String fileId;
     private String documentTypeId;
     private String activity;
     private String scheduleId;

@@ -16,10 +16,6 @@ import lombok.Setter;
 public class Document extends BaseModel {
 
     @ManyToOne
-    @JoinColumn(name = "file_id")
-    private File fileId;
-
-    @ManyToOne
     @JoinColumn(name = "document_type_id", nullable = false)
     private DocumentType documentTypeId;
 
