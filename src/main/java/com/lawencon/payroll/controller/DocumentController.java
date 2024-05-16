@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
+import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
+import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.service.DocumentService;
 
 import lombok.RequiredArgsConstructor;
@@ -47,8 +49,10 @@ public class DocumentController {
         return new ResponseEntity<>(documentRes, HttpStatus.OK);
     }
 
-    // @PatchMapping()
-    // public ResponseEntity<UpdateResDto> rescheduleDocuments(@RequestBody List<DocumentReqDto> data) {
+    @PatchMapping()
+    public ResponseEntity<UpdateResDto> rescheduleDocuments(@RequestBody List<UpdateDocumentReqDto> data) {
+        final var updateRes = documentService.rescheduleDocuments(data);
 
-    // }
+        return new ResponseEntity<>(updateRes, HttpStatus.OK);
+    }
 }

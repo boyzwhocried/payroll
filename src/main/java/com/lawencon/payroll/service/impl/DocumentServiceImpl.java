@@ -5,11 +5,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.sql.Update;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
+import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
+import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.model.Document;
 import com.lawencon.payroll.repository.DocumentRepository;
 import com.lawencon.payroll.repository.DocumentTypeRepository;
@@ -84,4 +87,22 @@ public class DocumentServiceImpl implements DocumentService {
         return documentsRes;
     }
 
+    @Override
+    public UpdateResDto rescheduleDocuments(List<UpdateDocumentReqDto> data) {
+        final var updateRes = new UpdateResDto();
+
+        data.forEach(documentReq -> {
+            var oldDoc = documentRepository.findById(documentReq.getDocumentId()).get();
+	    	final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            oldDoc.setDocumentDeadline(LocalDateTime.parse(documentReq.getDocumentDeadline(), formatter));
+            oldDoc.setUpdatedBy(principalService.getUserId());
+
+            oldDoc = documentRepository.saveAndFlush(oldDoc); 
+        });
+        
+        updateRes.setVersion(null);
+        updateRes.setMessage("Document(s) have been rescheduled!");
+        return updateRes;
+    }
 }
