@@ -18,7 +18,12 @@ public interface UserService extends UserDetailsService {
 
     List<UserResDto> getAllUsers();
 
-    List<UserResDto> getPayrollServiceUsers();
+    List<UserResDto> getAllUsersByCode(String code);
 
+    List<UserResDto> getAllUsersByPsId(String id);
+
+    List<UserResDto> getAllUsersByPsIdExcept(String id);
+    
     DeleteResDto deleteUserById(String id);
+
 }

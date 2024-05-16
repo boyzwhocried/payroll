@@ -70,9 +70,9 @@ public class UserServiceImpl implements UserService {
         final var file = user.get().getProfilePictureId();
 
         loginRes.setUserId(user.get().getId());
-        loginRes.setUserName(user.get().getFullName());
+        loginRes.setUserName(user.get().getUserName());
         loginRes.setUserId(user.get().getId());
-        loginRes.setUserName(user.get().getFullName());
+        loginRes.setUserName(user.get().getUserName());
         loginRes.setRoleCode(role.getRoleCode());
         loginRes.setToken(token);
 
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
         
         file = fileService.saveFile(file);
 
-        user.setFullName(data.getFullName());
+        user.setUserName(data.getFullName());
         user.setEmail(email);
         user.setPassword(password);
         user.setRoleId(role);
@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
             final var userRes = new UserResDto();
 
             userRes.setId(user.getId());
-            userRes.setFullName(user.getFullName());
+            userRes.setUserName(user.getUserName());
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
@@ -164,16 +164,58 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserResDto> getPayrollServiceUsers() {
+    public List<UserResDto> getAllUsersByCode(String code) {
         final var usersRes = new ArrayList<UserResDto>();
 
-        final var users = userRepository.findByRoleRoleCode(Roles.RL002.name());
+        final var users = userRepository.findByRoleRoleCode(code);
         
         users.forEach(user -> {
             final var userRes = new UserResDto();
 
             userRes.setId(user.getId());
-            userRes.setFullName(user.getFullName());
+            userRes.setUserName(user.getUserName());
+            userRes.setEmail(user.getEmail());
+            userRes.setRoleName(user.getRoleId().getRoleName());
+            userRes.setPhoneNumber(user.getPhoneNumber());
+
+            usersRes.add(userRes);
+        });
+
+        return usersRes;
+    }
+
+    @Override
+    public List<UserResDto> getAllUsersByPsId(String id) {
+        final var usersRes = new ArrayList<UserResDto>();
+
+        final var users = userRepository.findAllById(id);
+        
+        users.forEach(user -> {
+            final var userRes = new UserResDto();
+
+            userRes.setId(user.getId());
+            userRes.setUserName(user.getUserName());
+            userRes.setEmail(user.getEmail());
+            userRes.setRoleName(user.getRoleId().getRoleName());
+            userRes.setPhoneNumber(user.getPhoneNumber());
+
+            usersRes.add(userRes);
+        });
+
+        return usersRes;
+    }
+
+    @Override
+    public List<UserResDto> getAllUsersByPsIdExcept(String id) {
+        final var usersRes = new ArrayList<UserResDto>();
+
+        final var users = userRepository.findAllByIdNot(id);
+        
+        users.forEach(user -> {
+            final var userRes = new UserResDto();
+
+            userRes.setId(user.getId());
+            userRes.setUserName(user.getUserName());
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());

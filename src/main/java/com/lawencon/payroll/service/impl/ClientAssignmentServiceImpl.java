@@ -28,8 +28,8 @@ public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
 
     final var clientAssignmentResDto = new ClientAssignmentResDto();
 
-    final var payrollServiceId = clientAssignment.get().getPayrollService().getId();
-    final var clientId = clientAssignment.get().getClient().getId();
+    final var payrollServiceId = clientAssignment.get().getPsId().getId();
+    final var clientId = clientAssignment.get().getClientId().getId();
 
     clientAssignmentResDto.setId(id);
     clientAssignmentResDto.setClientId(clientId);
@@ -50,8 +50,8 @@ public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
     final var client = userRepository.findById(clientId);
     final var payrollService = userRepository.findById(payrollServiceId);
 
-    clientAssignment.setClient(client.get());
-    clientAssignment.setPayrollService(payrollService.get());
+    clientAssignment.setClientId(client.get());
+    clientAssignment.setPsId(payrollService.get());
     clientAssignment.setCreatedBy(principalService.getUserId());
 
     final var savedClientAssignment = clientAssignmentRepository.save(clientAssignment);

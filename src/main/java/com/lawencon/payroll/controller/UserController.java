@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,9 +55,21 @@ public class UserController {
         return new ResponseEntity<>(usersRes, HttpStatus.OK);
     }
 
-    @GetMapping("ps")
-    public ResponseEntity<List<UserResDto>> getPayrollServiceUsers() {
-        final var usersRes = userService.getPayrollServiceUsers();
+    @GetMapping("role/{code}")
+    public ResponseEntity<List<UserResDto>> getPayrollServiceUsers(@PathVariable String code) {
+        final var usersRes = userService.getAllUsersByCode(code);
+        return new ResponseEntity<>(usersRes, HttpStatus.OK);
+    }
+
+    @GetMapping("assigned/{id}")
+    public ResponseEntity<List<UserResDto>> getAssignedPayrollService(@PathVariable String id) {
+        final var usersRes = userService.getAllUsersByPsId(id);
+        return new ResponseEntity<>(usersRes, HttpStatus.OK);
+    }
+
+    @GetMapping("not-assigned/{id}")
+    public ResponseEntity<List<UserResDto>> getNotAssignedPayrollService(@PathVariable String id) {
+        final var usersRes = userService.getAllUsersByPsIdExcept(id);
         return new ResponseEntity<>(usersRes, HttpStatus.OK);
     }
 }
