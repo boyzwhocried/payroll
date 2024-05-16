@@ -10,5 +10,6 @@ public class UserReqDto {
     private String email;
     private String phoneNumber;
     private String roleId;
-    private String fileDirectory;
+    private String fileContent;
+    private String fileExtension;
 }
