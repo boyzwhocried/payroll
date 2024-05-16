@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lawencon.payroll.dto.generalResponse.DeleteResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
@@ -71,5 +73,11 @@ public class UserController {
     public ResponseEntity<List<UserResDto>> getNotAssignedPayrollService(@PathVariable String id) {
         final var usersRes = userService.getAllUsersByPsIdExcept(id);
         return new ResponseEntity<>(usersRes, HttpStatus.OK);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<DeleteResDto> deleteUser(@PathVariable String id) {
+        final var deleteRes = userService.deleteUserById(id);
+        return new ResponseEntity<>(deleteRes, HttpStatus.OK);
     }
 }
