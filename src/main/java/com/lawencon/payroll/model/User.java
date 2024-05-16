@@ -30,4 +30,7 @@ public class User extends BaseModel {
     @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role roleId;
+
+    @Column(name = "phone_no", nullable = false)
+    private String phoneNumber;
 }

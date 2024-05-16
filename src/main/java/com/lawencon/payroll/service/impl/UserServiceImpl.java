@@ -105,6 +105,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         user.setPassword(password);
         user.setRoleId(role);
+        user.setPhoneNumber(data.getPhoneNumber());
         user.setProfilePictureId(fileService.saveFile(data.getFileDirectory()));
         user.setCreatedBy(principalService.getUserId());
 
