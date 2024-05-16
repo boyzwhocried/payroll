@@ -79,6 +79,8 @@ public class DocumentServiceImpl implements DocumentService {
             documentRes.setDocumentDirectory(directory);
             documentRes.setDocumentName(name);
             documentRes.setDocumentTypeId(documentTypeId);
+
+            documentsRes.add(documentRes);
         });
 
         return documentsRes;

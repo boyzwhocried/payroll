@@ -11,6 +11,6 @@ import com.lawencon.payroll.model.Document;
 
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, String> {
-    @Query(value = "SELECT d FROM Document WHERE d.schedule.id = :scheduleId ")
+    @Query(value = "SELECT d FROM Document AS d WHERE d.schedule.id = :scheduleId")
     List<Document> getByScheduleId(@Param("scheduleId") String scheduleId);
 }
