@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
+import com.lawencon.payroll.dto.document.UpdateDocumentScheduleReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.model.Document;
@@ -87,7 +88,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public UpdateResDto rescheduleDocuments(List<UpdateDocumentReqDto> data) {
+    public UpdateResDto rescheduleDocuments(List<UpdateDocumentScheduleReqDto> data) {
         final var updateRes = new UpdateResDto();
 
         data.forEach(documentReq -> {
@@ -102,6 +103,37 @@ public class DocumentServiceImpl implements DocumentService {
         
         updateRes.setVersion(null);
         updateRes.setMessage("Document(s) have been rescheduled!");
+        return updateRes;
+    }
+
+    @Override
+    public UpdateResDto uploadFile(UpdateDocumentReqDto documentReq) {
+        final var updateRes = new UpdateResDto();
+
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+        System.out.println("MAsok");
+
+        var oldDoc = documentRepository.findById(documentReq.getDocumentId()).get();
+
+        oldDoc.setDocumentName(documentReq.getDocumentName());
+        oldDoc.setDocumentDirectory(documentReq.getDocumentDirectory());
+        oldDoc.setUpdatedBy(principalService.getUserId());
+
+        oldDoc = documentRepository.saveAndFlush(oldDoc); 
+
+        updateRes.setMessage("Document Has Been Uploaded!");
+        updateRes.setVersion(oldDoc.getVer());
+
         return updateRes;
     }
 }
