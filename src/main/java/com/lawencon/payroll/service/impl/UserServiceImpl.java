@@ -65,9 +65,7 @@ public class UserServiceImpl implements UserService {
         final var file = user.get().getProfilePictureId();
 
         loginRes.setUserId(user.get().getId());
-        loginRes.setUserName(user.get().getFullName());
-        loginRes.setUserId(user.get().getId());
-        loginRes.setUserName(user.get().getFullName());
+        loginRes.setUserName(user.get().getUserName());
         loginRes.setRoleCode(role.getRoleCode());
         loginRes.setToken(token);
 
@@ -101,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
         final var email = data.getEmail();
 
-        user.setFullName(data.getFullName());
+        user.setUserName(data.getFullName());
         user.setEmail(email);
         user.setPassword(password);
         user.setRoleId(role);

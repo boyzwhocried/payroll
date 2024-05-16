@@ -29,18 +29,12 @@ public class DocumentServiceImpl implements DocumentService {
         final var insertRes = new InsertResDto();
 
         data.forEach(documentReq -> {
-            final var file = fileService.loadById(documentReq.getFileId());
-
             final var documentType = documentTypeRepository.findById(documentReq.getDocumentTypeId());
-
             final var schedule = scheduleService.loadById(documentReq.getScheduleId());
 
             var document = new Document();
-            document.setFileId(file);
             document.setDocumentTypeId(documentType.get());
-
             document.setActivity(documentReq.getActivity());
-
             document.setScheduleId(schedule);
 
             document.setIsSignedBySender(true);
