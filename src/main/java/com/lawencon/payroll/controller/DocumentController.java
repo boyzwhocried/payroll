@@ -24,7 +24,7 @@ public class DocumentController {
 
     @PostMapping("new")
     public ResponseEntity<InsertResDto> createDocuments(@RequestBody List<DocumentReqDto> data) {
-        final var insertRes = documentService.createDocument(data);
+        final var insertRes = documentService.createDocuments(data);
         return new ResponseEntity<>(insertRes, HttpStatus.CREATED);
     }
 }

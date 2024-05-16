@@ -7,8 +7,9 @@ import lombok.Setter;
 @Getter
 public class DocumentReqDto {
     private String documentTypeId;
+    private String documentName;
+    private String documentDirectory;
     private String activity;
+    private String documentDeadline;
     private String scheduleId;
-    private Boolean isSignedBySender;
-    private Boolean isSignedByReceiver;
 }

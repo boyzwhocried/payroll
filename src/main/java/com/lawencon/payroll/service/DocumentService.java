@@ -6,5 +6,5 @@ import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 
 public interface DocumentService {
-    InsertResDto createDocument(List<DocumentReqDto> data);
+    InsertResDto createDocuments(List<DocumentReqDto> data);
 }

@@ -1,5 +1,7 @@
 package com.lawencon.payroll.model;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,17 +16,25 @@ import lombok.Setter;
 @Entity
 @Table(name = "t_r_document")
 public class Document extends BaseModel {
+    @Column(name = "document_name", nullable = false)
+    private String documentName;
+    
+    @Column(name = "document_directory", nullable = false)
+    private String documentDirectory;
 
     @ManyToOne
     @JoinColumn(name = "document_type_id", nullable = false)
-    private DocumentType documentTypeId;
+    private DocumentType documentType;
+
+    @Column(name = "document_deadline", nullable = false)
+    private LocalDateTime documentDeadline;
 
     @Column(nullable = false)
     private String activity;
-
+    
     @ManyToOne
     @JoinColumn(name = "schedule_id", nullable = false)
-    private Schedule scheduleId;
+    private Schedule schedule;
 
     @Column(name = "is_signed_by_sender", nullable = false)
     private Boolean isSignedBySender;
