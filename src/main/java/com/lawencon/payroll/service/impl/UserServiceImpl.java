@@ -26,6 +26,7 @@ import com.lawencon.payroll.dto.user.UserResDto;
 import com.lawencon.payroll.model.File;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
+import com.lawencon.payroll.service.CompanyService;
 import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.FileService;
 import com.lawencon.payroll.service.JwtService;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final CompanyService companyService;
     private final EmailService emailService;
     private final FileService fileService;
     private final JwtService jwtService;
@@ -124,6 +126,11 @@ public class UserServiceImpl implements UserService {
         user.setCreatedBy(principalService.getUserId());
 
         user = userRepository.save(user);
+
+        if (Roles.RL003.equals(role.getRoleCode())) {
+            final var companyReq = data.getCompanyReq();
+            companyService.createCompany(companyReq, user);
+        }
 
         final var subject = "New User Information";
 
