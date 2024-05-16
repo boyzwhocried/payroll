@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
 
         var file = new File();
         file.setFileContent(data.getFileContent());
-        file.setFileContent(data.getFileExtension());
+        file.setFileExtension(data.getFileExtension());
 
         file = fileService.saveFile(file);
 
