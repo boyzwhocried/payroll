@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "t_m_notification_template")
-public class NotificationTemplate {
+public class NotificationTemplate extends BaseModel {
   @Column(name = "notification_content", nullable = false)
   private String notificationContent;
 }

@@ -73,8 +73,6 @@ public class UserServiceImpl implements UserService {
 
         loginRes.setUserId(user.get().getId());
         loginRes.setUserName(user.get().getUserName());
-        loginRes.setUserId(user.get().getId());
-        loginRes.setUserName(user.get().getUserName());
         loginRes.setRoleCode(role.getRoleCode());
         loginRes.setToken(token);
 

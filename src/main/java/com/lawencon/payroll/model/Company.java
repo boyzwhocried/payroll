@@ -15,8 +15,13 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "t_m_company")
+<<<<<<< HEAD
 public class Company extends BaseModel {
   @Column(name = "company_name", nullable = false)
+=======
+public class Company extends BaseModel{
+  @Column(name = "company_name")
+>>>>>>> add_schedule
   private String companyName;
 
   @ManyToOne
