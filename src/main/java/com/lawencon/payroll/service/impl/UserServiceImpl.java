@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResDto> getAllUsersByPsId(String id) {
         final var usersRes = new ArrayList<UserResDto>();
 
-        final var users = userRepository.findAllById(id);
+        final var users = userRepository.findAllByRoleCodeAndId(Roles.RL003.name(), id);
 
         users.forEach(user -> {
             final var userRes = new UserResDto();
@@ -217,7 +217,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResDto> getAllUsersByPsIdExcept(String id) {
         final var usersRes = new ArrayList<UserResDto>();
 
-        final var users = userRepository.findAllByIdNot(id);
+        final var users = userRepository.findAllByRoleCodeAndIdNot(Roles.RL003.name(), id);
 
         users.forEach(user -> {
             final var userRes = new UserResDto();
