@@ -33,6 +33,7 @@ import com.lawencon.payroll.service.JwtService;
 import com.lawencon.payroll.service.PrincipalService;
 import com.lawencon.payroll.service.RoleService;
 import com.lawencon.payroll.service.UserService;
+import com.lawencon.payroll.util.FtpUtil;
 import com.lawencon.payroll.util.GenerateUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -82,6 +83,9 @@ public class UserServiceImpl implements UserService {
             loginRes.setFileId(file.getId());
         }
 
+        if (Roles.RL003.name().equals(loginRes.getRoleCode())) {
+            FtpUtil.createDirectory(loginRes.getUserName());
+        }
         return loginRes;
     }
 

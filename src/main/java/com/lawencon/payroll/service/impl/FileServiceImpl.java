@@ -69,11 +69,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void downloadFile(FileDownloadReqDto data) {
-        final var remoteFile = data.getRemoteFile();
-        final var downloadFile = data.getDownloadFile();
+    public byte[] downloadFile(String id) {
+        final String remoteFile = "/Files/attachment.png";
 
-        FtpUtil.downloadFile(remoteFile, downloadFile);
+        return FtpUtil.downloadFile(remoteFile);
     }
 
 }
