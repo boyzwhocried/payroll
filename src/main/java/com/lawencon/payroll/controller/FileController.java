@@ -32,7 +32,7 @@ public class FileController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> downloadFile(@PathVariable String id) {
-        final String fileName = "attachment.png";
+        final String fileName = "attachment22.png";
         final byte[] fileBytes = fileService.downloadFile(id);
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
 				"attachment; filename=" + fileName).body(fileBytes);
