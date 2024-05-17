@@ -99,6 +99,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public InsertResDto createUser(UserReqDto data) {
+
+        System.out.println(principalService.getUserId());
+
         final var insertRes = new InsertResDto();
         
         final var rawPassword = GenerateUtil.generateCode();
@@ -113,6 +116,8 @@ public class UserServiceImpl implements UserService {
         var file = new File();
         file.setFileContent(data.getFileContent());
         file.setFileExtension(data.getFileExtension());
+
+        file.setCreatedBy(principalService.getUserId());
         
         file = fileService.saveFile(file);
         
@@ -133,19 +138,19 @@ public class UserServiceImpl implements UserService {
             FtpUtil.createDirectory(user.getUserName());
         }
         
-        final var subject = "New User Information";
+        // final var subject = "New User Information";
         
-        final var body = "Hello" + role.getRoleName() + "!\n"
-                + "Here's your email and password :"
-                + "Email : " + email + "\n"
-                + "Password : " + rawPassword + "\n";
+        // final var body = "Hello" + role.getRoleName() + "!\n"
+        //         + "Here's your email and password :"
+        //         + "Email : " + email + "\n"
+        //         + "Password : " + rawPassword + "\n";
 
-        final Runnable runnable = () -> {
-            emailService.sendEmail(email, subject, body);
-        };
+        // final Runnable runnable = () -> {
+        //     emailService.sendEmail(email, subject, body);
+        // };
 
-        final var mailThread = new Thread(runnable);
-        mailThread.start();
+        // final var mailThread = new Thread(runnable);
+        // mailThread.start();
 
         insertRes.setId(user.getId());
         insertRes.setMessage("User has been created");

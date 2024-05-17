@@ -4,7 +4,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.lawencon.payroll.dto.file.FileDownloadReqDto;
 import com.lawencon.payroll.dto.file.FileReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.model.File;
@@ -25,13 +24,7 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public File saveFile(File file) {
-        final var newFile = new File();
-
-        file.setFileContent(file.getFileContent());
-        file.setFileExtension(file.getFileExtension());
-        file.setCreatedBy(principalService.getUserId());
-        
-        return fileRepository.save(newFile);
+        return fileRepository.save(file);
     }
 
     @Override

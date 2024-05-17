@@ -25,9 +25,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company createCompany(CompanyReqDto data, User user) {
+        final String id = principalService.getUserId();
+        
         var file = new File();
         file.setFileContent(data.getFileContent());
         file.setFileExtension(data.getFileExtension());
+
+        file.setCreatedBy(id);
 
         file = fileService.saveFile(file);
 
@@ -36,7 +40,7 @@ public class CompanyServiceImpl implements CompanyService {
         company.setClientId(user);
         company.setCompanyLogo(file);
         company.setPayrollDate(DateUtil.toLocalDateTime(data.getPayrollDate()));
-        company.setCreatedBy(principalService.getUserId());
+        company.setCreatedBy(id);
 
         return companyRepository.save(company);
     }
