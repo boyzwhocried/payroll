@@ -219,7 +219,11 @@ public class UserServiceImpl implements UserService {
     public List<UserResDto> getAllUsersByPsIdExcept(String id) {
         final var usersRes = new ArrayList<UserResDto>();
 
-        final var users = userRepository.findAllByIdNot(id);
+        final var clientRoleCode = Roles.RL003.name();
+
+        System.out.println(clientRoleCode);
+
+        final var users = userRepository.findAllByIdNot(id, clientRoleCode);
 
         users.forEach(user -> {
             final var userRes = new UserResDto();

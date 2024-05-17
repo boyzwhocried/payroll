@@ -34,16 +34,12 @@ public interface UserRepository extends JpaRepository<User, String>{
   List<User> findAllById(@Param("psId") String psId);
 
   @Query(value = "SELECT cl FROM User cl "
-              + "INNER JOIN ClientAssignment ca "
-              + "ON ca.clientId = cl.id "
-              + "WHERE cl.id NOT IN "
+              + "INNER JOIN Role rl "
+              + "ON cl.roleId.id = rl.id "
+              + "WHERE rl.roleCode = :roleCode AND cl.id NOT IN "
               + "( "
               + "SELECT ca.clientId FROM ClientAssignment ca "
-              + "INNER JOIN User cl "
-              + "ON cl.id = ca.clientId "
-              + "INNER JOIN User ps "
-              + "ON ps.id = ca.psId "
-              + "WHERE ps.id = :psId "
+              + "WHERE ca.psId.id = :psId "
               + ") ")
-  List<User> findAllByIdNot(@Param("psId") String psId);
+  List<User> findAllByIdNot(@Param("psId") String psId, @Param("roleCode") String roleCode);
 }
