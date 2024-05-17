@@ -1,8 +1,10 @@
 package com.lawencon.payroll.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +30,11 @@ public class FileController {
         return new ResponseEntity<>(insertRes, HttpStatus.CREATED);
     }
 
-    @GetMapping("")
-    public void downloadFile(@RequestBody FileDownloadReqDto data) {
-        fileService.downloadFile(data);
+    @GetMapping("{id}")
+    public ResponseEntity<?> downloadFile(@PathVariable String id) {
+        final String fileName = "attachment.png";
+        final byte[] fileBytes = fileService.downloadFile(id);
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+				"attachment; filename=" + fileName).body(fileBytes);
     }
 }
