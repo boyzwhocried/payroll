@@ -5,7 +5,7 @@ import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.model.File;
 
 public interface FileService {
-    File saveFile(File file);
+    File saveFile(String content, String extension);
 
     File loadById(String id);
 

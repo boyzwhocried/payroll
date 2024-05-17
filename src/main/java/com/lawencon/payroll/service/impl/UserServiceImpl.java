@@ -23,11 +23,10 @@ import com.lawencon.payroll.dto.user.LoginResDto;
 import com.lawencon.payroll.dto.user.UpdateUserReqDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.dto.user.UserResDto;
-import com.lawencon.payroll.model.File;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.CompanyService;
-import com.lawencon.payroll.service.EmailService;
+// import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.FileService;
 import com.lawencon.payroll.service.JwtService;
 import com.lawencon.payroll.service.PrincipalService;
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final CompanyService companyService;
-    private final EmailService emailService;
+    // private final EmailService emailService;
     private final FileService fileService;
     private final JwtService jwtService;
     private final PrincipalService principalService;
@@ -99,6 +98,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public InsertResDto createUser(UserReqDto data) {
+
+        System.out.println(principalService.getUserId());
+
         final var insertRes = new InsertResDto();
         
         final var rawPassword = GenerateUtil.generateCode();
@@ -110,11 +112,7 @@ public class UserServiceImpl implements UserService {
         
         final var email = data.getEmail();
         
-        var file = new File();
-        file.setFileContent(data.getFileContent());
-        file.setFileExtension(data.getFileExtension());
-        
-        file = fileService.saveFile(file);
+        final var file = fileService.saveFile(data.getFileContent(), data.getFileExtension());
         
         user.setUserName(data.getFullName());
         user.setEmail(email);
@@ -133,19 +131,19 @@ public class UserServiceImpl implements UserService {
             FtpUtil.createDirectory(user.getId());
         }
         
-        final var subject = "New User Information";
+        // final var subject = "New User Information";
         
-        final var body = "Hello" + role.getRoleName() + "!\n"
-                + "Here's your email and password :"
-                + "Email : " + email + "\n"
-                + "Password : " + rawPassword + "\n";
+        // final var body = "Hello" + role.getRoleName() + "!\n"
+        //         + "Here's your email and password :"
+        //         + "Email : " + email + "\n"
+        //         + "Password : " + rawPassword + "\n";
 
-        final Runnable runnable = () -> {
-            emailService.sendEmail(email, subject, body);
-        };
+        // final Runnable runnable = () -> {
+        //     emailService.sendEmail(email, subject, body);
+        // };
 
-        final var mailThread = new Thread(runnable);
-        mailThread.start();
+        // final var mailThread = new Thread(runnable);
+        // mailThread.start();
 
         insertRes.setId(user.getId());
         insertRes.setMessage("User has been created");
@@ -198,7 +196,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResDto> getAllUsersByPsId(String id) {
         final var usersRes = new ArrayList<UserResDto>();
 
-        final var users = userRepository.findAllById(id);
+        final var users = userRepository.findAllByRoleCodeAndId(Roles.RL003.name(), id);
 
         users.forEach(user -> {
             final var userRes = new UserResDto();
@@ -219,11 +217,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResDto> getAllUsersByPsIdExcept(String id) {
         final var usersRes = new ArrayList<UserResDto>();
 
-        final var clientRoleCode = Roles.RL003.name();
-
-        System.out.println(clientRoleCode);
-
-        final var users = userRepository.findAllByIdNot(id, clientRoleCode);
+        final var users = userRepository.findAllByRoleCodeAndIdNot(Roles.RL003.name(), id);
 
         users.forEach(user -> {
             final var userRes = new UserResDto();
