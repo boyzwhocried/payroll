@@ -20,30 +20,24 @@ public interface UserRepository extends JpaRepository<User, String>{
   List<User> findByRoleRoleCode(@Param("roleCode") String roleCode);
   
   @Query(value = "SELECT cl FROM User cl "
-              + "INNER JOIN ClientAssignment ca "
-              + "ON ca.clientId = cl.id "
-              + "WHERE cl.id IN "
+              + "INNER JOIN Role ro "
+              + "ON cl.roleId.id = ro.id "
+              + "WHERE ro.roleCode = :roleCode "
+              + "AND cl.id IN "
               + "( "
               + "SELECT ca.clientId FROM ClientAssignment ca "
-              + "INNER JOIN User cl "
-              + "ON cl.id = ca.clientId "
-              + "INNER JOIN User ps "
-              + "ON ps.id = ca.psId "
-              + "WHERE ps.id = :psId "
+              + "WHERE ca.psId.id = :psId "
               + ") ")
-  List<User> findAllById(@Param("psId") String psId);
+  List<User> findAllByRoleCodeAndId(@Param("roleCode") String roleCode, @Param("psId") String psId);
 
   @Query(value = "SELECT cl FROM User cl "
-              + "INNER JOIN ClientAssignment ca "
-              + "ON ca.clientId = cl.id "
-              + "WHERE cl.id NOT IN "
+              + "INNER JOIN Role ro "
+              + "ON cl.roleId.id = ro.id "
+              + "WHERE ro.roleCode = :roleCode "
+              + "AND cl.id NOT IN "
               + "( "
               + "SELECT ca.clientId FROM ClientAssignment ca "
-              + "INNER JOIN User cl "
-              + "ON cl.id = ca.clientId "
-              + "INNER JOIN User ps "
-              + "ON ps.id = ca.psId "
-              + "WHERE ps.id = :psId "
+              + "WHERE ca.psId.id = :psId "
               + ") ")
-  List<User> findAllByIdNot(@Param("psId") String psId);
+  List<User> findAllByRoleCodeAndIdNot(@Param("roleCode") String roleCode, @Param("psId") String psId);
 }

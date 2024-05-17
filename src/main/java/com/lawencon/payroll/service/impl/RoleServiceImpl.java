@@ -29,19 +29,15 @@ public class RoleServiceImpl implements RoleService {
         final List<RoleResDto> rolesRes = new ArrayList<>();
         
         final List<Role> roles = roleRepository.findByRoleCodeNot(Roles.RL001.name());
-
-        final int size = roles.size();
-        for(int i=0;i<size;i++) {
-            final Role role = roles.get(i);
-
+        roles.forEach(role -> {
             final RoleResDto roleRes = new RoleResDto();
-
+    
             roleRes.setId(role.getId());
             roleRes.setCode(role.getRoleCode());
             roleRes.setName(role.getRoleName());
-
+    
             rolesRes.add(roleRes);
-        }
+        });
 
         return rolesRes;
     }
