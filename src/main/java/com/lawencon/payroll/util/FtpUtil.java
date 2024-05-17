@@ -1,12 +1,9 @@
 package com.lawencon.payroll.util;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.File;
 import java.util.Base64;
 
 import org.apache.commons.net.ftp.FTP;
@@ -29,18 +26,6 @@ public class FtpUtil {
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
 			System.out.println("======> Uploading file");
-
-			final boolean deleted = ftpClient.deleteFile(remoteFile);
-			if (deleted) {
-				System.out.println("Deleted");
-			} else {
-				System.out.println("It's not.");
-			}
-
-			final boolean isDeleted = ftpClient.completePendingCommand();
-			if (isDeleted) {
-				System.out.println("======> Delete successfully");
-			}
 
 			final OutputStream outputStream = ftpClient.storeFileStream(remoteFile);
 			final byte[] data = Base64.getDecoder().decode(fileBase64);
@@ -74,6 +59,7 @@ public class FtpUtil {
 		final String pass = "forScienceChell";
 
 		byte[] base = null;
+
 		final FTPClient ftpClient = new FTPClient();
 		try {
 			ftpClient.connect(server, port);
@@ -88,13 +74,6 @@ public class FtpUtil {
 			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
 			inputStream.transferTo(byteArray);
 			base = byteArray.toByteArray();
-            // boolean success = ftpClient.retrieveFile(remoteFile, outputStream1);
-            // outputStream1.close();
-			
-			
-            // if (success) {
-            //     System.out.println("Download successfully.");
-            // }
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -126,9 +105,9 @@ public class FtpUtil {
 
 			ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
-			System.out.println("======> Downloading file");
+			System.out.println("======> Create New Directory");
 
-			final String directory = "/user-" + userName;
+			final String directory = "/" + userName + "/";
 
             boolean success = ftpClient.makeDirectory(directory);
  

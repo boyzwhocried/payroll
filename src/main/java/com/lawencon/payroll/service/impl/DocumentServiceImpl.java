@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.lawencon.payroll.dto.document.DocumentDownloadReqDto;
+import com.lawencon.payroll.dto.document.DocumentDownloadResDto;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
@@ -109,38 +109,46 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public UpdateResDto uploadDocument(UpdateDocumentReqDto documentReq) {
+    public UpdateResDto uploadDocument(UpdateDocumentReqDto data) {
         final var updateRes = new UpdateResDto();
 
-        var oldDoc = documentRepository.findById(documentReq.getDocumentId()).get();
+        var oldDocument = documentRepository.findById(data.getDocumentId()).get();
 
-        final var directory = "/Files";
-
-        final var base64 = documentReq.getBase64();
-        final var documentExtension = documentReq.getExtension();
-        final var userName = documentReq.getUserName();
-        final var documentName = documentReq.getDocumentName();
-        final var remoteFile = directory+"/"+userName+"/"+documentName+documentExtension;
+        final var base64 = data.getBase64();
+        final var userName = data.getUserName();
+        final var documentName = data.getDocumentName();
+        final var directory = "/Files/" + userName + "/";
+        
+        final var remoteFile = directory + documentName;
 
         FtpUtil.sendFile(base64, remoteFile);
 
-        oldDoc.setDocumentName(documentName);
-        oldDoc.setDocumentDirectory(remoteFile);
-        oldDoc.setUpdatedBy(principalService.getUserId());
+        oldDocument.setDocumentName(documentName);
+        oldDocument.setDocumentDirectory(directory);
 
-        oldDoc = documentRepository.saveAndFlush(oldDoc); 
+        oldDocument.setUpdatedBy(principalService.getUserId());
 
+        oldDocument = documentRepository.saveAndFlush(oldDocument); 
+
+        updateRes.setVersion(oldDocument.getVer());
         updateRes.setMessage("Document Has Been Uploaded!");
-        updateRes.setVersion(oldDoc.getVer());
 
         return updateRes;
     }
 
     @Override
-    public void downloadDocument(DocumentDownloadReqDto data) {
-        final var remoteFile = data.getRemoteDocument();
-        final var downloadFile = data.getDownloadDocument();
+    public DocumentDownloadResDto downloadDocument(String id) {
+        final var downloadRes = new DocumentDownloadResDto();
 
-        FtpUtil.downloadFile(remoteFile, downloadFile);
+        final var document = documentRepository.findById(id).get();
+
+        final var documentName = document.getDocumentName();
+        
+        final var remoteFile = (document.getDocumentDirectory()) + documentName;
+
+        downloadRes.setFileName(documentName);
+        downloadRes.setFileBytes(FtpUtil.downloadFile(remoteFile));
+
+        return downloadRes;
     }
 }

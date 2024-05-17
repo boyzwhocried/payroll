@@ -2,7 +2,7 @@ package com.lawencon.payroll.controller;
 
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +41,18 @@ public class DocumentController {
         final var updateRes = documentService.uploadDocument(data);
 
         return new ResponseEntity<>(updateRes, HttpStatus.OK); 
+    }
+
+    @GetMapping("download/{id}")
+    public ResponseEntity<?> downloadDocument(@PathVariable String id) {
+        final var downloadRes = documentService.downloadDocument(id);
+        
+        final String fileName = downloadRes.getFileName();
+        
+        final byte[] fileBytes = downloadRes.getFileBytes();
+		
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+        "attachment; filename=" + fileName).body(fileBytes);
     }
 
     @GetMapping("{scheduleId}")

@@ -70,7 +70,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public byte[] downloadFile(String id) {
-        final String remoteFile = "/Files/attachment.png";
+        final String remoteFile = "/Files/attachment22.png";
 
         return FtpUtil.downloadFile(remoteFile);
     }

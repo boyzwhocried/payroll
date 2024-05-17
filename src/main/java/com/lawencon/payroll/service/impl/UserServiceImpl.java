@@ -83,42 +83,39 @@ public class UserServiceImpl implements UserService {
             loginRes.setFileId(file.getId());
         }
 
-        if (Roles.RL003.name().equals(loginRes.getRoleCode())) {
-            FtpUtil.createDirectory(loginRes.getUserName());
-        }
         return loginRes;
     }
-
+    
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         final var user = userRepository.findByEmail(email);
         if (user != null) {
             return new org.springframework.security.core.userdetails.User(email, user.getPassword(),
-                    new ArrayList<>());
+            new ArrayList<>());
         }
         throw new UsernameNotFoundException("Invalid input!");
     }
-
+    
     @Override
     @Transactional
     public InsertResDto createUser(UserReqDto data) {
         final var insertRes = new InsertResDto();
-
+        
         final var rawPassword = GenerateUtil.generateCode();
         final var password = passwordEncoder.encode(rawPassword);
-
+        
         var user = new User();
-
+        
         final var role = roleService.getById(data.getRoleId());
-
+        
         final var email = data.getEmail();
-
+        
         var file = new File();
         file.setFileContent(data.getFileContent());
         file.setFileExtension(data.getFileExtension());
-
+        
         file = fileService.saveFile(file);
-
+        
         user.setUserName(data.getFullName());
         user.setEmail(email);
         user.setPassword(password);
@@ -126,16 +123,18 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(data.getPhoneNumber());
         user.setProfilePictureId(file);
         user.setCreatedBy(principalService.getUserId());
-
+        
         user = userRepository.save(user);
-
-        if (Roles.RL003.equals(role.getRoleCode())) {
+        
+        if (Roles.RL003.name().equals(role.getRoleCode())) {
             final var companyReq = data.getCompanyReq();
             companyService.createCompany(companyReq, user);
+            
+            FtpUtil.createDirectory(user.getUserName());
         }
-
+        
         final var subject = "New User Information";
-
+        
         final var body = "Hello" + role.getRoleName() + "!\n"
                 + "Here's your email and password :"
                 + "Email : " + email + "\n"
