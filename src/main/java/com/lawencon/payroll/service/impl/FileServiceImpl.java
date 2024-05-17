@@ -23,7 +23,14 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public File saveFile(File file) {
+    public File saveFile(String content, String extension) {
+        final var file = new File();
+        
+        file.setFileContent(content);
+        file.setFileExtension(extension);
+
+        file.setCreatedBy(principalService.getUserId());
+
         return fileRepository.save(file);
     }
 

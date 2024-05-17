@@ -23,11 +23,10 @@ import com.lawencon.payroll.dto.user.LoginResDto;
 import com.lawencon.payroll.dto.user.UpdateUserReqDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.dto.user.UserResDto;
-import com.lawencon.payroll.model.File;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.CompanyService;
-import com.lawencon.payroll.service.EmailService;
+// import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.FileService;
 import com.lawencon.payroll.service.JwtService;
 import com.lawencon.payroll.service.PrincipalService;
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final CompanyService companyService;
-    private final EmailService emailService;
+    // private final EmailService emailService;
     private final FileService fileService;
     private final JwtService jwtService;
     private final PrincipalService principalService;
@@ -113,13 +112,7 @@ public class UserServiceImpl implements UserService {
         
         final var email = data.getEmail();
         
-        var file = new File();
-        file.setFileContent(data.getFileContent());
-        file.setFileExtension(data.getFileExtension());
-
-        file.setCreatedBy(principalService.getUserId());
-        
-        file = fileService.saveFile(file);
+        final var file = fileService.saveFile(data.getFileContent(), data.getFileExtension());
         
         user.setUserName(data.getFullName());
         user.setEmail(email);

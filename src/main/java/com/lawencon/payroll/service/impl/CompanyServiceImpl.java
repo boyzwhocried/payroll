@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.dto.company.CompanyReqDto;
 import com.lawencon.payroll.model.Company;
-import com.lawencon.payroll.model.File;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.CompanyRepository;
 import com.lawencon.payroll.service.CompanyService;
@@ -27,19 +26,16 @@ public class CompanyServiceImpl implements CompanyService {
     public Company createCompany(CompanyReqDto data, User user) {
         final String id = principalService.getUserId();
         
-        var file = new File();
-        file.setFileContent(data.getFileContent());
-        file.setFileExtension(data.getFileExtension());
-
-        file.setCreatedBy(id);
-
-        file = fileService.saveFile(file);
+        final var file = fileService.saveFile(data.getFileContent(), data.getFileExtension());
 
         final var company = new Company();
+        
         company.setCompanyName(data.getName());
         company.setClientId(user);
         company.setCompanyLogo(file);
+        
         company.setPayrollDate(DateUtil.toLocalDateTime(data.getPayrollDate()));
+
         company.setCreatedBy(id);
 
         return companyRepository.save(company);
