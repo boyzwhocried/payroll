@@ -38,7 +38,7 @@ public class DocumentController {
 
     @PatchMapping()
     public ResponseEntity<UpdateResDto> uploadDocument(@RequestBody UpdateDocumentReqDto data) {
-        final var updateRes = documentService.uploadFile(data);
+        final var updateRes = documentService.uploadDocument(data);
 
         return new ResponseEntity<>(updateRes, HttpStatus.OK); 
     }

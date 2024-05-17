@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.lawencon.payroll.dto.document.DocumentDownloadReqDto;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
@@ -19,6 +20,7 @@ import com.lawencon.payroll.repository.DocumentTypeRepository;
 import com.lawencon.payroll.service.DocumentService;
 import com.lawencon.payroll.service.PrincipalService;
 import com.lawencon.payroll.service.ScheduleService;
+import com.lawencon.payroll.util.FtpUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -107,26 +109,23 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public UpdateResDto uploadFile(UpdateDocumentReqDto documentReq) {
+    public UpdateResDto uploadDocument(UpdateDocumentReqDto documentReq) {
         final var updateRes = new UpdateResDto();
-
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
-        System.out.println("MAsok");
 
         var oldDoc = documentRepository.findById(documentReq.getDocumentId()).get();
 
-        oldDoc.setDocumentName(documentReq.getDocumentName());
-        oldDoc.setDocumentDirectory(documentReq.getDocumentDirectory());
+        final var directory = "/Files";
+
+        final var base64 = documentReq.getBase64();
+        final var documentExtension = documentReq.getExtension();
+        final var userName = documentReq.getUserName();
+        final var documentName = documentReq.getDocumentName();
+        final var remoteFile = directory+"/"+userName+"/"+documentName+documentExtension;
+
+        FtpUtil.sendFile(base64, remoteFile);
+
+        oldDoc.setDocumentName(documentName);
+        oldDoc.setDocumentDirectory(remoteFile);
         oldDoc.setUpdatedBy(principalService.getUserId());
 
         oldDoc = documentRepository.saveAndFlush(oldDoc); 
@@ -135,5 +134,13 @@ public class DocumentServiceImpl implements DocumentService {
         updateRes.setVersion(oldDoc.getVer());
 
         return updateRes;
+    }
+
+    @Override
+    public void downloadDocument(DocumentDownloadReqDto data) {
+        final var remoteFile = data.getRemoteDocument();
+        final var downloadFile = data.getDownloadDocument();
+
+        FtpUtil.downloadFile(remoteFile, downloadFile);
     }
 }

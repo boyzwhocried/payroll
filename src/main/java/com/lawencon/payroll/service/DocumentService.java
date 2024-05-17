@@ -2,6 +2,7 @@ package com.lawencon.payroll.service;
 
 import java.util.List;
 
+import com.lawencon.payroll.dto.document.DocumentDownloadReqDto;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
@@ -14,7 +15,9 @@ public interface DocumentService {
 
     UpdateResDto rescheduleDocuments(List<UpdateDocumentScheduleReqDto> data);
 
-    UpdateResDto uploadFile(UpdateDocumentReqDto updateDocumentReqDto);
+    UpdateResDto uploadDocument(UpdateDocumentReqDto data);
 
-    List<DocumentResDto> getDocumentsByScheduleId(String scheduleId);
+    void downloadDocument(DocumentDownloadReqDto data);
+
+    List<DocumentResDto> getDocumentsByScheduleId(String data);
 }
