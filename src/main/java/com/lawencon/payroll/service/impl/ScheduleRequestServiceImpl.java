@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import com.lawencon.payroll.dto.scheduleRequestTypeService.ScheduleRequestTypeResDto;
 import com.lawencon.payroll.model.ScheduleRequestType;
 import com.lawencon.payroll.repository.ScheduleRequestTypeRepository;
-import com.lawencon.payroll.service.ScheduleRequestService;
+import com.lawencon.payroll.service.ScheduleRequestTypeService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ScheduleRequestServiceImpl implements ScheduleRequestService{
+public class ScheduleRequestServiceImpl implements ScheduleRequestTypeService{
 
   private ScheduleRequestTypeRepository scheduleRequestTypeRepository;
 

@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
             final var companyReq = data.getCompanyReq();
             companyService.createCompany(companyReq, user);
             
-            FtpUtil.createDirectory(user.getUserName());
+            FtpUtil.createDirectory(user.getId());
         }
         
         final var subject = "New User Information";

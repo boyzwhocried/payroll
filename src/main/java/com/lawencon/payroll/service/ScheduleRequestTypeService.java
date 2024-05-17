@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.lawencon.payroll.dto.scheduleRequestTypeService.ScheduleRequestTypeResDto;
 
-public interface ScheduleRequestService {
+public interface ScheduleRequestTypeService {
   List<ScheduleRequestTypeResDto> getAll();
   ScheduleRequestTypeResDto getById(String id);
 }

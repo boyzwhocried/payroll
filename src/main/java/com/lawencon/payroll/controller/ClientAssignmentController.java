@@ -30,7 +30,7 @@ public class ClientAssignmentController {
     return new ResponseEntity<>(clientAssignmentRes, HttpStatus.OK);
   }
 
-@PostMapping()
+  @PostMapping()
   public ResponseEntity<InsertResDto> saveClientAssignment(
     @RequestBody ClientAssignmentReqDto clientAssignmentReqDto
   ) {

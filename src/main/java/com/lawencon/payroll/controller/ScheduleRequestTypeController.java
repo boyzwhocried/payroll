@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.payroll.dto.scheduleRequestTypeService.ScheduleRequestTypeResDto;
-import com.lawencon.payroll.service.ScheduleRequestService;
+import com.lawencon.payroll.service.ScheduleRequestTypeService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("schedule-request-types")
 public class ScheduleRequestTypeController {
-  private final ScheduleRequestService scheduleRequestService;
+  private final ScheduleRequestTypeService scheduleRequestService;
 
   @GetMapping("")
   public ResponseEntity<List<ScheduleRequestTypeResDto>> getAllScheduleRequestType() {

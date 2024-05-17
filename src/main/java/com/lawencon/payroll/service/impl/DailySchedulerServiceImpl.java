@@ -15,14 +15,14 @@ public class DailySchedulerServiceImpl implements DailySchedulerService {
   
   private final ScheduleRepository scheduleRepository;
 
-  @Scheduled(fixedRate = 2000)
+  // @Scheduled(fixedRate = 2000)
   @Override
   public void addMonthlyScheduleJob() {
-    final var schedule = new Schedule();
-    schedule.setClientAssignmentId(null);
-    schedule.setScheduleRequestTypeId(null);
+    // final var schedule = new Schedule();
+    // schedule.setClientAssignmentId(null);
+    // schedule.setScheduleRequestTypeId(null);
   
-    scheduleRepository.save(schedule);
-    System.out.println("Masok!");
+    // scheduleRepository.save(schedule);
+    // System.out.println("Masok!");
   }
 }
