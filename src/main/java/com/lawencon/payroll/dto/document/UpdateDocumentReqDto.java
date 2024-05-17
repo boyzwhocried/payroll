@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 public class UpdateDocumentReqDto {
   private String documentId;
+  private String base64;
+  private String extension;
   private String documentName;
-  private String documentDirectory;
+  private String userName;
 }
