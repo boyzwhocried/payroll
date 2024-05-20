@@ -30,7 +30,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         final var company = new Company();
         
-        company.setCompanyName(data.getName());
+        company.setCompanyName(data.getCompanyName());
         company.setClientId(user);
         company.setCompanyLogo(file);
         

@@ -6,7 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CompanyReqDto {
-    private String name;
+    private String companyName;
     private String fileContent;
     private String fileExtension;
     private String payrollDate;
