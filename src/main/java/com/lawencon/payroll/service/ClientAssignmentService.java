@@ -5,6 +5,11 @@ import com.lawencon.payroll.dto.clientAssignment.ClientAssignmentResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 
 public interface ClientAssignmentService {
+
   InsertResDto saveClientAssignment(ClientAssignmentReqDto clientAssignmentReqDto);
+
   ClientAssignmentResDto getById(String id);
+
+  Integer getTotalClients(String id);
+
 }

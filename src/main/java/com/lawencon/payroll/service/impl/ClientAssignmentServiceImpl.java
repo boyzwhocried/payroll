@@ -1,4 +1,5 @@
 package com.lawencon.payroll.service.impl;
+
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
+public class ClientAssignmentServiceImpl implements ClientAssignmentService {
 
   private final ClientAssignmentRepository clientAssignmentRepository;
   private final UserRepository userRepository;
@@ -34,7 +35,7 @@ public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
     clientAssignmentResDto.setId(id);
     clientAssignmentResDto.setClientId(clientId);
     clientAssignmentResDto.setPsId(payrollServiceId);
-    
+
     return clientAssignmentResDto;
   }
 
@@ -45,7 +46,7 @@ public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
     final var clientAssignment = new ClientAssignment();
 
     final var clientId = clientAssignmentReq.getClientId();
-    final var payrollServiceId = clientAssignmentReq.getPsId(); 
+    final var payrollServiceId = clientAssignmentReq.getPsId();
 
     final var client = userRepository.findById(clientId);
     final var payrollService = userRepository.findById(payrollServiceId);
@@ -60,5 +61,10 @@ public class ClientAssignmentServiceImpl implements ClientAssignmentService  {
     insertRes.setMessage("Insert Success");
 
     return insertRes;
+  }
+
+  @Override
+  public Integer getTotalClients(String id) {
+    return clientAssignmentRepository.getCountClientIdByPsId(id);
   }
 }
