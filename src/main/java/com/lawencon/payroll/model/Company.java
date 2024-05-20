@@ -24,10 +24,6 @@ public class Company extends BaseModel {
   @JoinColumn(name = "company_logo_id", nullable = false)
   private File companyLogo;
 
-  @ManyToOne
-  @JoinColumn(name = "client_id", nullable = false)
-  private User clientId;
-
   @Column(name = "payroll_date", nullable = false)
   private LocalDateTime payrollDate;
 }

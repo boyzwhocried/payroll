@@ -7,10 +7,11 @@ import com.lawencon.payroll.dto.company.CompanyResDto;
 import com.lawencon.payroll.dto.company.UpdateCompanyReqDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.model.Company;
-import com.lawencon.payroll.model.User;
 
 public interface CompanyService {
-    Company createCompany(CompanyReqDto data, User user);
+    Company createCompany(CompanyReqDto data);
+
+    Company findByCompanyName(String companyName);
 
     List<CompanyResDto> getCompanies();
 
