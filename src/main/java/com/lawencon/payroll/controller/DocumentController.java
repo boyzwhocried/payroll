@@ -31,7 +31,7 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @PostMapping()
-    public ResponseEntity<InsertResDto> createDocumentsSchedule(@RequestBody List<DocumentReqDto> data) {
+    public ResponseEntity<InsertResDto> createDocumentsSchedule(@RequestBody DocumentReqDto data) {
         final var insertRes = documentService.createDocuments(data);
         return new ResponseEntity<>(insertRes, HttpStatus.CREATED);
     }

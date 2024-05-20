@@ -1,5 +1,7 @@
 package com.lawencon.payroll.dto.document;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,5 +9,5 @@ import lombok.Setter;
 @Getter
 public class DocumentReqDto {
     private String scheduleId;
-    private DocumentsReqDto documentsReqDto;
+    private List<DocumentsReqDto> documentsReqDto;
 }

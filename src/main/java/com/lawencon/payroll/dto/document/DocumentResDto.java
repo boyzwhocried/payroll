@@ -7,7 +7,6 @@ import lombok.Setter;
 @Getter
 public class DocumentResDto {
   private String documentId;
-  private String documentTypeId;
   private String documentName;
   private String documentDirectory;
   private String activity;

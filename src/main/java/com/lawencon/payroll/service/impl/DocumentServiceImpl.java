@@ -32,16 +32,19 @@ public class DocumentServiceImpl implements DocumentService {
     private final ScheduleService scheduleService;
 
     @Override
-    public InsertResDto createDocuments(List<DocumentReqDto> data) {
+    public InsertResDto createDocuments(DocumentReqDto data) {
         final var insertRes = new InsertResDto();
 
-        data.forEach(documentReq -> {
-            final var schedule = scheduleService.loadById(documentReq.getScheduleId());
+        final var schedule = scheduleService.loadById(data.getScheduleId());
+        
+        final var documentsReq = data.getDocumentsReqDto();
+
+        documentsReq.forEach(documentReq -> {
 
 		    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-            final var deadline = LocalDateTime.parse(documentReq.getDocumentsReqDto().getDocumentDeadline(), formatter);
-            final var activity = documentReq.getDocumentsReqDto().getActivity();
+            final var deadline = LocalDateTime.parse(documentReq.getDocumentDeadline(), formatter);
+            final var activity = documentReq.getActivity();
 
             var document = new Document();
             document.setDocumentDeadline(deadline);
