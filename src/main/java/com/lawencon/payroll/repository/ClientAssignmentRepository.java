@@ -12,6 +12,6 @@ public interface ClientAssignmentRepository extends JpaRepository<ClientAssignme
 {   
     @Query(value = "SELECT COUNT(ca.clientId) "
                 + "FROM ClientAssignment ca "
-                + "WHERE ca.psId = :psId ")
+                + "WHERE ca.psId.id = :psId ")
     Integer getCountClientIdByPsId(@Param("psId") String id);
 }
