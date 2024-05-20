@@ -12,6 +12,12 @@ import lombok.Setter;
 @Entity
 @Table(name = "t_m_notification_template")
 public class NotificationTemplate extends BaseModel {
-  @Column(name = "notification_content", nullable = false)
-  private String notificationContent;
+  @Column(name = "notification_code", nullable = false)
+  private String notificationCode;
+
+  @Column(name = "notification_body", nullable = false)
+  private String notificationBody;
+
+  @Column(name = "notification_header", nullable = false)
+  private String notificationHeader;
 }
