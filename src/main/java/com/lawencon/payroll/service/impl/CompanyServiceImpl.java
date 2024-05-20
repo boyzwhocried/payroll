@@ -13,7 +13,6 @@ import com.lawencon.payroll.dto.company.CompanyResDto;
 import com.lawencon.payroll.dto.company.UpdateCompanyReqDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.model.Company;
-import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.CompanyRepository;
 import com.lawencon.payroll.service.CompanyService;
 import com.lawencon.payroll.service.FileService;
@@ -33,7 +32,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional
-    public Company createCompany(CompanyReqDto data, User user) {
+    public Company createCompany(CompanyReqDto data) {
         final String id = principalService.getUserId();
         
         final var file = fileService.saveFile(data.getFileContent(), data.getFileExtension());
@@ -41,7 +40,6 @@ public class CompanyServiceImpl implements CompanyService {
         final var company = new Company();
         
         company.setCompanyName(data.getCompanyName());
-        company.setClientId(user);
         company.setCompanyLogo(file);
         
         company.setPayrollDate(DateUtil.toLocalDateTime(data.getPayrollDate()));
@@ -49,6 +47,11 @@ public class CompanyServiceImpl implements CompanyService {
         company.setCreatedBy(id);
 
         return companyRepository.save(company);
+    }
+
+    @Override
+    public Company findByCompanyName(String companyName) {
+        return companyRepository.findByCompanyName(companyName);
     }
 
     @Override

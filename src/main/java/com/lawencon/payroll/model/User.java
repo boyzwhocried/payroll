@@ -28,6 +28,10 @@ public class User extends BaseModel {
     private File profilePictureId;
 
     @ManyToOne
+    @JoinColumn(name = "company_id", nullable = false)
+    private Company companyId;
+
+    @ManyToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role roleId;
 

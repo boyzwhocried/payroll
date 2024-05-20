@@ -26,6 +26,7 @@ import com.lawencon.payroll.dto.user.PsListResDto;
 import com.lawencon.payroll.dto.user.UpdateUserReqDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.dto.user.UserResDto;
+import com.lawencon.payroll.model.Company;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.ClientAssignmentService;
@@ -119,20 +120,27 @@ public class UserServiceImpl implements UserService {
 
         final var file = fileService.saveFile(data.getFileContent(), data.getFileExtension());
 
+        Company company = null;
+        if(Roles.RL003.name().equals(role.getRoleCode())) {
+            final var companyReq = data.getCompanyReq();
+            company = companyService.createCompany(companyReq);
+        } else {
+            company = companyService.findByCompanyName("PT. Lawencon International");
+        }
+
         user.setUserName(data.getFullName());
         user.setEmail(email);
         user.setPassword(password);
         user.setRoleId(role);
         user.setPhoneNumber(data.getPhoneNumber());
         user.setProfilePictureId(file);
+        user.setCompanyId(company);
+
         user.setCreatedBy(principalService.getUserId());
 
         user = userRepository.save(user);
 
         if (Roles.RL003.name().equals(role.getRoleCode())) {
-            final var companyReq = data.getCompanyReq();
-            companyService.createCompany(companyReq, user);
-
             FtpUtil.createDirectory(user.getId());
         }
 
