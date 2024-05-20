@@ -5,9 +5,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CompanyReqDto {
+public class UpdateCompanyReqDto {
+    private String id;
     private String companyName;
-    private String fileContent;
-    private String fileExtension;
-    private String payrollDate;
+    private String companyLogoContent;
+    private String companyLogoExtension;
 }

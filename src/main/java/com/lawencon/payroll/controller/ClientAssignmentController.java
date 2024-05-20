@@ -20,22 +20,19 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("client-assignments")
 @RequiredArgsConstructor
 public class ClientAssignmentController {
-  private final ClientAssignmentService  clientAssignmentService;
+  private final ClientAssignmentService clientAssignmentService;
 
   @GetMapping("")
   public ResponseEntity<ClientAssignmentResDto> getClientAssignment(
-    @PathVariable ("id") String id) {
+      @PathVariable("id") String id) {
     final var clientAssignmentRes = clientAssignmentService.getById(id);
 
     return new ResponseEntity<>(clientAssignmentRes, HttpStatus.OK);
   }
 
   @PostMapping()
-  public ResponseEntity<InsertResDto> saveClientAssignment(
-    @RequestBody ClientAssignmentReqDto clientAssignmentReqDto
-  ) {
-    final var insertRes = clientAssignmentService.saveClientAssignment(clientAssignmentReqDto);
-
+  public ResponseEntity<InsertResDto> saveClientAssignment(@RequestBody ClientAssignmentReqDto data) {
+    final var insertRes = clientAssignmentService.saveClientAssignment(data);
     return new ResponseEntity<>(insertRes, HttpStatus.CREATED);
   }
-} 
+}

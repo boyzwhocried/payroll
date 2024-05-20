@@ -18,13 +18,17 @@ import com.lawencon.payroll.constant.Roles;
 import com.lawencon.payroll.dto.generalResponse.DeleteResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
+import com.lawencon.payroll.dto.user.ClientListResDto;
+import com.lawencon.payroll.dto.user.ClientResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
+import com.lawencon.payroll.dto.user.PsListResDto;
 import com.lawencon.payroll.dto.user.UpdateUserReqDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.dto.user.UserResDto;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
+import com.lawencon.payroll.service.ClientAssignmentService;
 import com.lawencon.payroll.service.CompanyService;
 // import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.FileService;
@@ -45,6 +49,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final ClientAssignmentService clientAssignmentService;
     private final CompanyService companyService;
     // private final EmailService emailService;
     private final FileService fileService;
@@ -84,17 +89,17 @@ public class UserServiceImpl implements UserService {
 
         return loginRes;
     }
-    
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         final var user = userRepository.findByEmail(email);
         if (user != null) {
             return new org.springframework.security.core.userdetails.User(email, user.getPassword(),
-            new ArrayList<>());
+                    new ArrayList<>());
         }
         throw new UsernameNotFoundException("Invalid input!");
     }
-    
+
     @Override
     @Transactional
     public InsertResDto createUser(UserReqDto data) {
@@ -102,18 +107,18 @@ public class UserServiceImpl implements UserService {
         System.out.println(principalService.getUserId());
 
         final var insertRes = new InsertResDto();
-        
+
         final var rawPassword = GenerateUtil.generateCode();
         final var password = passwordEncoder.encode(rawPassword);
-        
+
         var user = new User();
-        
+
         final var role = roleService.getById(data.getRoleId());
-        
+
         final var email = data.getEmail();
-        
+
         final var file = fileService.saveFile(data.getFileContent(), data.getFileExtension());
-        
+
         user.setUserName(data.getFullName());
         user.setEmail(email);
         user.setPassword(password);
@@ -121,25 +126,25 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(data.getPhoneNumber());
         user.setProfilePictureId(file);
         user.setCreatedBy(principalService.getUserId());
-        
+
         user = userRepository.save(user);
-        
+
         if (Roles.RL003.name().equals(role.getRoleCode())) {
             final var companyReq = data.getCompanyReq();
             companyService.createCompany(companyReq, user);
-            
+
             FtpUtil.createDirectory(user.getId());
         }
-        
+
         // final var subject = "New User Information";
-        
+
         // final var body = "Hello" + role.getRoleName() + "!\n"
-        //         + "Here's your email and password :"
-        //         + "Email : " + email + "\n"
-        //         + "Password : " + rawPassword + "\n";
+        // + "Here's your email and password :"
+        // + "Email : " + email + "\n"
+        // + "Password : " + rawPassword + "\n";
 
         // final Runnable runnable = () -> {
-        //     emailService.sendEmail(email, subject, body);
+        // emailService.sendEmail(email, subject, body);
         // };
 
         // final var mailThread = new Thread(runnable);
@@ -164,11 +169,35 @@ public class UserServiceImpl implements UserService {
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
+            userRes.setProfilePictureId(user.getProfilePictureId().getId());
 
             usersRes.add(userRes);
         });
 
         return usersRes;
+    }
+
+    @Override
+    public List<PsListResDto> getAllPs() {
+        final var psListRes = new ArrayList<PsListResDto>();
+
+        final var psList = userRepository.findByRoleRoleCode(Roles.RL002.name());
+
+        psList.forEach(ps -> {
+            final var psRes = new PsListResDto();
+
+            final var psId = ps.getId();
+
+            psRes.setPsId(psId);
+            psRes.setUserName(ps.getUserName());
+            psRes.setEmail(ps.getEmail());
+            psRes.setPhoneNo(ps.getPhoneNumber());
+            psRes.setTotalClients(clientAssignmentService.getTotalClients(psId));
+
+            psListRes.add(psRes);
+        });
+
+        return psListRes;
     }
 
     @Override
@@ -185,11 +214,50 @@ public class UserServiceImpl implements UserService {
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
+            userRes.setProfilePictureId(user.getProfilePictureId().getId());
 
             usersRes.add(userRes);
         });
 
         return usersRes;
+    }
+
+    @Override
+    public ClientListResDto getAllClients(String id) {
+        final var clientListRes = new ClientListResDto();
+
+        final var assignedClientsList = userRepository.findAllByRoleCodeAndId(Roles.RL003.name(), id);
+        final var assignedClientsListRes = new ArrayList<ClientResDto>();
+
+        assignedClientsList.forEach(assignedClient -> {
+            final var client = new ClientResDto();
+
+            client.setId(assignedClient.getId());
+            client.setFullName(assignedClient.getUserName());
+            client.setEmail(assignedClient.getEmail());
+            client.setPhoneNumber(assignedClient.getPhoneNumber());
+
+            assignedClientsListRes.add(client);
+        });
+
+        final var unassignedClientsList = userRepository.findAllByRoleCodeAndIdNot(Roles.RL003.name(), id);
+        final var unassignedClientsListRes = new ArrayList<ClientResDto>();
+
+        unassignedClientsList.forEach(unassignedClient -> {
+            final var client = new ClientResDto();
+
+            client.setId(unassignedClient.getId());
+            client.setFullName(unassignedClient.getUserName());
+            client.setEmail(unassignedClient.getEmail());
+            client.setPhoneNumber(unassignedClient.getPhoneNumber());
+            
+            unassignedClientsListRes.add(client);
+        });
+
+        clientListRes.setAssignedClients(assignedClientsListRes);
+        clientListRes.setUnassignedClients(unassignedClientsListRes);
+
+        return clientListRes;
     }
 
     @Override
@@ -206,6 +274,7 @@ public class UserServiceImpl implements UserService {
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
+            userRes.setProfilePictureId(user.getProfilePictureId().getId());
 
             usersRes.add(userRes);
         });
@@ -227,6 +296,7 @@ public class UserServiceImpl implements UserService {
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
+            userRes.setProfilePictureId(user.getProfilePictureId().getId());
 
             usersRes.add(userRes);
         });
@@ -238,6 +308,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UpdateResDto updateUser(UpdateUserReqDto data) {
         var user = userRepository.findById(data.getId()).get();
+
+        final var oldVersion = user.getVer();
 
         var name = Optional.ofNullable(data.getName());
         if (name.isPresent()) {
@@ -262,6 +334,7 @@ public class UserServiceImpl implements UserService {
         var content = Optional.ofNullable(data.getFileContent());
         if (content.isPresent()) {
             var file = user.getProfilePictureId();
+
             file.setFileContent(content.get());
             file.setFileExtension(data.getFileExtension());
 
@@ -270,10 +343,18 @@ public class UserServiceImpl implements UserService {
             user.setProfilePictureId(file);
         }
 
+        user.setUpdatedBy(principalService.getUserId());
+
         user = userRepository.saveAndFlush(user);
 
+        final var newVersion = user.getVer();
+
         final var updateRes = new UpdateResDto();
-        updateRes.setVersion(user.getVer());
+        
+        if (newVersion != oldVersion) {
+            updateRes.setVersion(user.getVer());
+        }
+        
         updateRes.setMessage("User data has been updated");
 
         return updateRes;

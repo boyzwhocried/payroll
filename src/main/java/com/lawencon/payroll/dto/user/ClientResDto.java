@@ -5,11 +5,9 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UserResDto {
+public class ClientResDto {
     private String id;
-    private String userName;
+    private String fullName;
     private String email;
-    private String roleName;
     private String phoneNumber;
-    private String profilePictureId;
 }

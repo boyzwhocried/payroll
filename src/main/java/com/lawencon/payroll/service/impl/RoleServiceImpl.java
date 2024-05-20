@@ -33,8 +33,8 @@ public class RoleServiceImpl implements RoleService {
             final RoleResDto roleRes = new RoleResDto();
     
             roleRes.setId(role.getId());
-            roleRes.setCode(role.getRoleCode());
-            roleRes.setName(role.getRoleName());
+            roleRes.setRoleCode(role.getRoleCode());
+            roleRes.setRoleName(role.getRoleName());
     
             rolesRes.add(roleRes);
         });

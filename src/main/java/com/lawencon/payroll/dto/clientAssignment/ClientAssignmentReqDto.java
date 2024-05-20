@@ -1,5 +1,7 @@
 package com.lawencon.payroll.dto.clientAssignment;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,5 +9,5 @@ import lombok.Setter;
 @Getter
 public class ClientAssignmentReqDto {
   private String psId;
-  private String clientId;
+  private List<String> clients;
 }
