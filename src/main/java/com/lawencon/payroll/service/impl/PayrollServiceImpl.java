@@ -38,13 +38,13 @@ public class PayrollServiceImpl implements PayrollService {
       clientAssignments.forEach(clientAssignment -> {
           final var payroll = new PayrollResDto();
           
-          final var clientId = clientAssignment.getClientId().getId();
-          // final var clientName = ;
-          // final var payrollDate = ;
-          // final var scheduleStatus = ;
+          final var clientAssignmentId = clientAssignment.getId();
+          final var clientName = clientAssignment.getClientId().getUserName();
+          final var payrollDate = clientAssignment.getClientId();
+          // final var scheduleStatus = clientAssignment.ge;
 
-          payroll.setId(clientId);
-          payroll.setClientName(null);
+          payroll.setId(clientAssignmentId);
+          payroll.setClientName(clientName);
           payroll.setPayrollDate(null);
           payroll.setScheduleStatus(null);
 
