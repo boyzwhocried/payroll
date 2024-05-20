@@ -40,24 +40,23 @@ public class ClientAssignmentServiceImpl implements ClientAssignmentService {
   }
 
   @Override
-  public InsertResDto saveClientAssignment(ClientAssignmentReqDto clientAssignmentReq) {
+  public InsertResDto saveClientAssignment(ClientAssignmentReqDto data) {
+    final var psId = data.getPsId();
+
+    final var clients = data.getClients();
+
+    clients.forEach(client -> {
+      final var clientAssignment = new ClientAssignment();
+
+      clientAssignment.setClientId(userRepository.findById(client).get());
+      clientAssignment.setPsId(userRepository.findById(psId).get());
+      clientAssignment.setCreatedBy(principalService.getUserId());
+
+      clientAssignmentRepository.save(clientAssignment);
+    });
+
     final var insertRes = new InsertResDto();
 
-    final var clientAssignment = new ClientAssignment();
-
-    final var clientId = clientAssignmentReq.getClientId();
-    final var payrollServiceId = clientAssignmentReq.getPsId();
-
-    final var client = userRepository.findById(clientId);
-    final var payrollService = userRepository.findById(payrollServiceId);
-
-    clientAssignment.setClientId(client.get());
-    clientAssignment.setPsId(payrollService.get());
-    clientAssignment.setCreatedBy(principalService.getUserId());
-
-    final var savedClientAssignment = clientAssignmentRepository.save(clientAssignment);
-
-    insertRes.setId(savedClientAssignment.getId());
     insertRes.setMessage("Insert Success");
 
     return insertRes;
