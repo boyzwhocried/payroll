@@ -11,7 +11,7 @@ import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 
 public interface DocumentService {
-    InsertResDto createDocuments(List<DocumentReqDto> data);
+    InsertResDto createDocuments(DocumentReqDto data);
 
     UpdateResDto rescheduleDocuments(List<UpdateDocumentScheduleReqDto> data);
 

@@ -16,9 +16,9 @@ public class Schedule extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "client_assignment_id", nullable = false)
-    private ClientAssignment clientAssignmentId;
+    private ClientAssignment clientAssignment;
 
     @ManyToOne
     @JoinColumn(name = "schedule_request_type_id", nullable = false)
-    private ScheduleRequestType scheduleRequestTypeId;
+    private ScheduleRequestType scheduleRequestType;
 }

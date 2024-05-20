@@ -22,10 +22,6 @@ public class Document extends BaseModel {
     @Column(name = "document_directory")
     private String documentDirectory;
 
-    @ManyToOne
-    @JoinColumn(name = "document_type_id", nullable = false)
-    private DocumentType documentType;
-
     @Column(name = "document_deadline", nullable = false)
     private LocalDateTime documentDeadline;
 
