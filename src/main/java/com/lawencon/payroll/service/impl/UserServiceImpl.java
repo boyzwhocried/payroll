@@ -164,6 +164,7 @@ public class UserServiceImpl implements UserService {
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
+            userRes.setProfilePictureId(user.getProfilePictureId().getId());
 
             usersRes.add(userRes);
         });
@@ -185,6 +186,7 @@ public class UserServiceImpl implements UserService {
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
+            userRes.setProfilePictureId(user.getProfilePictureId().getId());
 
             usersRes.add(userRes);
         });
@@ -206,6 +208,7 @@ public class UserServiceImpl implements UserService {
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
+            userRes.setProfilePictureId(user.getProfilePictureId().getId());
 
             usersRes.add(userRes);
         });
@@ -227,6 +230,7 @@ public class UserServiceImpl implements UserService {
             userRes.setEmail(user.getEmail());
             userRes.setRoleName(user.getRoleId().getRoleName());
             userRes.setPhoneNumber(user.getPhoneNumber());
+            userRes.setProfilePictureId(user.getProfilePictureId().getId());
 
             usersRes.add(userRes);
         });
