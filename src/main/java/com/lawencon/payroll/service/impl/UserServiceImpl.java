@@ -332,6 +332,7 @@ public class UserServiceImpl implements UserService {
         var content = Optional.ofNullable(data.getFileContent());
         if (content.isPresent()) {
             var file = user.getProfilePictureId();
+
             file.setFileContent(content.get());
             file.setFileExtension(data.getFileExtension());
 
@@ -340,9 +341,12 @@ public class UserServiceImpl implements UserService {
             user.setProfilePictureId(file);
         }
 
+        user.setUpdatedBy(principalService.getUserId());
+
         user = userRepository.saveAndFlush(user);
 
         final var updateRes = new UpdateResDto();
+        
         updateRes.setVersion(user.getVer());
         updateRes.setMessage("User data has been updated");
 

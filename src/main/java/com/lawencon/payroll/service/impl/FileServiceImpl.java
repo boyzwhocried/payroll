@@ -43,6 +43,8 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public File updateFile(File file) {
+        file.setUpdatedBy(principalService.getUserId());
+        
         return fileRepository.saveAndFlush(file);
     }
 
