@@ -1,8 +1,12 @@
 package com.lawencon.payroll.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.dto.company.CompanyReqDto;
+import com.lawencon.payroll.dto.company.CompanyResDto;
 import com.lawencon.payroll.model.Company;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.CompanyRepository;
@@ -39,6 +43,25 @@ public class CompanyServiceImpl implements CompanyService {
         company.setCreatedBy(id);
 
         return companyRepository.save(company);
+    }
+
+    @Override
+    public List<CompanyResDto> getCompanies() {
+        final var companiesRes = new ArrayList<CompanyResDto>();
+        
+        final var companies = companyRepository.findAll();
+
+        companies.forEach(company -> {
+            final var companyRes = new CompanyResDto();
+
+            companyRes.setId(company.getId());
+            companyRes.setCompanyName(company.getCompanyName());
+            companyRes.setCompanyLogoId(company.getCompanyLogo().getId());
+            
+            companiesRes.add(companyRes);
+        });
+
+        return companiesRes;
     }
 
 }
