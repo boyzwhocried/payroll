@@ -309,6 +309,8 @@ public class UserServiceImpl implements UserService {
     public UpdateResDto updateUser(UpdateUserReqDto data) {
         var user = userRepository.findById(data.getId()).get();
 
+        final var oldVersion = user.getVer();
+
         var name = Optional.ofNullable(data.getName());
         if (name.isPresent()) {
             user.setUserName(name.get());
@@ -345,9 +347,14 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.saveAndFlush(user);
 
+        final var newVersion = user.getVer();
+
         final var updateRes = new UpdateResDto();
         
-        updateRes.setVersion(user.getVer());
+        if (newVersion != oldVersion) {
+            updateRes.setVersion(user.getVer());
+        }
+        
         updateRes.setMessage("User data has been updated");
 
         return updateRes;

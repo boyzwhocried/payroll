@@ -45,7 +45,7 @@ public class FileServiceImpl implements FileService {
     public File updateFile(File file) {
         file.setUpdatedBy(principalService.getUserId());
         
-        return fileRepository.saveAndFlush(file);
+        return fileRepository.save(file);
     }
 
     @Override

@@ -97,7 +97,10 @@ public class CompanyServiceImpl implements CompanyService {
 
         final var updateRes = new UpdateResDto();
 
-        updateRes.setVersion(company.getVer());
+        if (content.isPresent()) {
+            updateRes.setVersion(company.getVer());
+        }
+        
         updateRes.setMessage("Company data has been updated!");
 
         return updateRes;
