@@ -9,6 +9,7 @@ import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
+import com.lawencon.payroll.dto.user.PsListResDto;
 import com.lawencon.payroll.dto.user.UpdateUserReqDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.dto.user.UserResDto;
@@ -19,6 +20,8 @@ public interface UserService extends UserDetailsService {
     InsertResDto createUser(UserReqDto data);
 
     List<UserResDto> getAllUsers();
+
+    List<PsListResDto> getAllPs();
 
     List<UserResDto> getAllUsersByCode(String code);
 

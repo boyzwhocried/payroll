@@ -20,11 +20,13 @@ import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
+import com.lawencon.payroll.dto.user.PsListResDto;
 import com.lawencon.payroll.dto.user.UpdateUserReqDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.dto.user.UserResDto;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
+import com.lawencon.payroll.service.ClientAssignmentService;
 import com.lawencon.payroll.service.CompanyService;
 // import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.FileService;
@@ -45,6 +47,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final ClientAssignmentService clientAssignmentService;
     private final CompanyService companyService;
     // private final EmailService emailService;
     private final FileService fileService;
@@ -170,6 +173,29 @@ public class UserServiceImpl implements UserService {
         });
 
         return usersRes;
+    }
+
+    @Override
+    public List<PsListResDto> getAllPs() {
+        final var psListRes = new ArrayList<PsListResDto>();
+
+        final var psList = userRepository.findByRoleRoleCode(Roles.RL002.name());
+
+        psList.forEach(ps -> {
+            final var psRes = new PsListResDto();
+
+            final var psId = ps.getId();
+
+            psRes.setPsId(psId);
+            psRes.setUserName(ps.getUserName());
+            psRes.setEmail(ps.getEmail());
+            psRes.setPhoneNo(ps.getPhoneNumber());
+            psRes.setTotalClients(clientAssignmentService.getTotalClients(psId));
+
+            psListRes.add(psRes);
+        });
+
+        return psListRes;
     }
 
     @Override
