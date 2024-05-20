@@ -42,7 +42,7 @@ public class CompanyServiceImpl implements CompanyService {
         company.setCompanyName(data.getCompanyName());
         company.setCompanyLogo(file);
         
-        company.setPayrollDate(DateUtil.toLocalDateTime(data.getPayrollDate()));
+        company.setPayrollDate(data.getPayrollDate());
 
         company.setCreatedBy(id);
 
