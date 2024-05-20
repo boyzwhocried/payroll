@@ -1,7 +1,11 @@
 package com.lawencon.payroll.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
+import com.lawencon.payroll.dto.schedule.ScheduleResDto;
 import com.lawencon.payroll.model.Schedule;
 import com.lawencon.payroll.repository.ClientAssignmentRepository;
 import com.lawencon.payroll.repository.ScheduleRepository;
@@ -28,6 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         return schedule.get();
     }
 
+    @Override
     public Schedule addNewSchedule(String clientAssignmentId, String scheduleRequestTypeId) {
         final var schedule = new Schedule();
 
@@ -36,8 +41,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         final var userId = clientAssignment.get().getClientId().getId();
 
-        schedule.setClientAssignmentId(clientAssignment.get());
-        schedule.setScheduleRequestTypeId(scheduleRequestType.get());
+        schedule.setClientAssignment(clientAssignment.get());
+        schedule.setScheduleRequestType(scheduleRequestType.get());
         schedule.setCreatedBy(principalService.getUserId());
 
         FtpUtil.createDirectory(userId+"/"+"test1");
@@ -46,4 +51,24 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         return savedSchedule;
     };
+
+    @Override
+public List<ScheduleResDto> getByClientAssignmentId(String clientAssignmentId) {
+        final var schedulesRes = new ArrayList<ScheduleResDto>(); 
+        final var schedules = scheduleRepository.findByClientAssignmentId(clientAssignmentId);
+
+        schedules.forEach(schedule -> {
+            final var scheduleRes = new ScheduleResDto();
+
+            final var scheduleId = schedule.getId();
+            final var payrollDate = schedule.getCreatedAt().toString();
+
+            scheduleRes.setId(scheduleId);
+            scheduleRes.setPayrollDate(payrollDate);
+
+            schedulesRes.add(scheduleRes);
+        });
+
+        return schedulesRes;
+    }
 }
