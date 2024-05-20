@@ -30,7 +30,7 @@ import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.ClientAssignmentService;
 import com.lawencon.payroll.service.CompanyService;
-// import com.lawencon.payroll.service.EmailService;
+import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.FileService;
 import com.lawencon.payroll.service.JwtService;
 import com.lawencon.payroll.service.PrincipalService;
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     private final ClientAssignmentService clientAssignmentService;
     private final CompanyService companyService;
-    // private final EmailService emailService;
+    private final EmailService emailService;
     private final FileService fileService;
     private final JwtService jwtService;
     private final PrincipalService principalService;
@@ -136,19 +136,19 @@ public class UserServiceImpl implements UserService {
             FtpUtil.createDirectory(user.getId());
         }
 
-        // final var subject = "New User Information";
+        final var subject = "New User Information";
 
-        // final var body = "Hello" + role.getRoleName() + "!\n"
-        // + "Here's your email and password :"
-        // + "Email : " + email + "\n"
-        // + "Password : " + rawPassword + "\n";
+        final var body = "Hello" + role.getRoleName() + "!\n"
+        + "Here's your email and password :"
+        + "Email : " + email + "\n"
+        + "Password : " + rawPassword + "\n";
 
-        // final Runnable runnable = () -> {
-        // emailService.sendEmail(email, subject, body);
-        // };
+        final Runnable runnable = () -> {
+        emailService.sendEmail(email, subject, body);
+        };
 
-        // final var mailThread = new Thread(runnable);
-        // mailThread.start();
+        final var mailThread = new Thread(runnable);
+        mailThread.start();
 
         insertRes.setId(user.getId());
         insertRes.setMessage("User has been created");
