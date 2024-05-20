@@ -16,7 +16,6 @@ import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.model.Document;
 import com.lawencon.payroll.repository.DocumentRepository;
-import com.lawencon.payroll.repository.DocumentTypeRepository;
 import com.lawencon.payroll.service.DocumentService;
 import com.lawencon.payroll.service.PrincipalService;
 import com.lawencon.payroll.service.ScheduleService;
@@ -28,25 +27,28 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
-    private final DocumentTypeRepository documentTypeRepository;
     private final PrincipalService principalService;
 
     private final ScheduleService scheduleService;
 
     @Override
-    public InsertResDto createDocuments(List<DocumentReqDto> data) {
+    public InsertResDto createDocuments(DocumentReqDto data) {
         final var insertRes = new InsertResDto();
 
-        data.forEach(documentReq -> {
-            final var documentType = documentTypeRepository.findById(documentReq.getDocumentTypeId());
-            final var schedule = scheduleService.loadById(documentReq.getScheduleId());
+        final var schedule = scheduleService.loadById(data.getScheduleId());
+        
+        final var documentsReq = data.getDocumentsReqDto();
 
-		final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        documentsReq.forEach(documentReq -> {
+
+		    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+            final var deadline = LocalDateTime.parse(documentReq.getDocumentDeadline(), formatter);
+            final var activity = documentReq.getActivity();
 
             var document = new Document();
-            document.setDocumentType(documentType.get());
-            document.setDocumentDeadline(LocalDateTime.parse(documentReq.getDocumentDeadline(), formatter));
-            document.setActivity(documentReq.getActivity());
+            document.setDocumentDeadline(deadline);
+            document.setActivity(activity);
             document.setSchedule(schedule);
             document.setIsSignedBySender(false);
             document.setIsSignedByReceiver(false);
@@ -73,15 +75,12 @@ public class DocumentServiceImpl implements DocumentService {
             final var deadline = document.getDocumentDeadline().toString();
             final var directory = document.getDocumentDirectory();
             final var name = document.getDocumentName();
-
-            final var documentTypeId = document.getDocumentType().getId();
             
             documentRes.setDocumentId(id);
             documentRes.setActivity(activity);
             documentRes.setDocumentDeadline(deadline);
             documentRes.setDocumentDirectory(directory);
             documentRes.setDocumentName(name);
-            documentRes.setDocumentTypeId(documentTypeId);
 
             documentsRes.add(documentRes);
         });

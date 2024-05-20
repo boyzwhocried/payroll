@@ -1,5 +1,7 @@
 package com.lawencon.payroll.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,4 +16,8 @@ public interface ClientAssignmentRepository extends JpaRepository<ClientAssignme
                 + "FROM ClientAssignment ca "
                 + "WHERE ca.psId.id = :psId ")
     Integer getCountClientIdByPsId(@Param("psId") String id);
+
+  @Query(value = "SELECT ca FROM ClientAssignment ca " 
+                + "WHERE ca.psId.id = :psId ")
+  List<ClientAssignment> getByPsId(@Param("psId") String psId);
 }
