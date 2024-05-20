@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lawencon.payroll.dto.generalResponse.DeleteResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
+import com.lawencon.payroll.dto.user.ClientListResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
 import com.lawencon.payroll.dto.user.PsListResDto;
@@ -65,6 +66,12 @@ public class UserController {
     public ResponseEntity<List<PsListResDto>> getPayrollServiceUsers() {
         final var usersRes = userService.getAllPs();
         return new ResponseEntity<>(usersRes, HttpStatus.OK);
+    }
+
+    @GetMapping("client-assignments/{id}")
+    public ResponseEntity<ClientListResDto> getClientList(@PathVariable String id) {
+        final var clientListRes = userService.getAllClients(id);
+        return new ResponseEntity<>(clientListRes, HttpStatus.OK);
     }
 
     @GetMapping("assigned/{id}")

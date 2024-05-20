@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import com.lawencon.payroll.dto.generalResponse.DeleteResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
+import com.lawencon.payroll.dto.user.ClientListResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
 import com.lawencon.payroll.dto.user.PsListResDto;
@@ -22,6 +23,8 @@ public interface UserService extends UserDetailsService {
     List<UserResDto> getAllUsers();
 
     List<PsListResDto> getAllPs();
+
+    ClientListResDto getAllClients(String id);
 
     List<UserResDto> getAllUsersByCode(String code);
 

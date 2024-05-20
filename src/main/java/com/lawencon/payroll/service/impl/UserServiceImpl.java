@@ -18,6 +18,8 @@ import com.lawencon.payroll.constant.Roles;
 import com.lawencon.payroll.dto.generalResponse.DeleteResDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
+import com.lawencon.payroll.dto.user.ClientListResDto;
+import com.lawencon.payroll.dto.user.ClientResDto;
 import com.lawencon.payroll.dto.user.LoginReqDto;
 import com.lawencon.payroll.dto.user.LoginResDto;
 import com.lawencon.payroll.dto.user.PsListResDto;
@@ -87,17 +89,17 @@ public class UserServiceImpl implements UserService {
 
         return loginRes;
     }
-    
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         final var user = userRepository.findByEmail(email);
         if (user != null) {
             return new org.springframework.security.core.userdetails.User(email, user.getPassword(),
-            new ArrayList<>());
+                    new ArrayList<>());
         }
         throw new UsernameNotFoundException("Invalid input!");
     }
-    
+
     @Override
     @Transactional
     public InsertResDto createUser(UserReqDto data) {
@@ -105,18 +107,18 @@ public class UserServiceImpl implements UserService {
         System.out.println(principalService.getUserId());
 
         final var insertRes = new InsertResDto();
-        
+
         final var rawPassword = GenerateUtil.generateCode();
         final var password = passwordEncoder.encode(rawPassword);
-        
+
         var user = new User();
-        
+
         final var role = roleService.getById(data.getRoleId());
-        
+
         final var email = data.getEmail();
-        
+
         final var file = fileService.saveFile(data.getFileContent(), data.getFileExtension());
-        
+
         user.setUserName(data.getFullName());
         user.setEmail(email);
         user.setPassword(password);
@@ -124,25 +126,25 @@ public class UserServiceImpl implements UserService {
         user.setPhoneNumber(data.getPhoneNumber());
         user.setProfilePictureId(file);
         user.setCreatedBy(principalService.getUserId());
-        
+
         user = userRepository.save(user);
-        
+
         if (Roles.RL003.name().equals(role.getRoleCode())) {
             final var companyReq = data.getCompanyReq();
             companyService.createCompany(companyReq, user);
-            
+
             FtpUtil.createDirectory(user.getId());
         }
-        
+
         // final var subject = "New User Information";
-        
+
         // final var body = "Hello" + role.getRoleName() + "!\n"
-        //         + "Here's your email and password :"
-        //         + "Email : " + email + "\n"
-        //         + "Password : " + rawPassword + "\n";
+        // + "Here's your email and password :"
+        // + "Email : " + email + "\n"
+        // + "Password : " + rawPassword + "\n";
 
         // final Runnable runnable = () -> {
-        //     emailService.sendEmail(email, subject, body);
+        // emailService.sendEmail(email, subject, body);
         // };
 
         // final var mailThread = new Thread(runnable);
@@ -218,6 +220,44 @@ public class UserServiceImpl implements UserService {
         });
 
         return usersRes;
+    }
+
+    @Override
+    public ClientListResDto getAllClients(String id) {
+        final var clientListRes = new ClientListResDto();
+
+        final var assignedClientsList = userRepository.findAllByRoleCodeAndId(Roles.RL003.name(), id);
+        final var assignedClientsListRes = new ArrayList<ClientResDto>();
+
+        assignedClientsList.forEach(assignedClient -> {
+            final var client = new ClientResDto();
+
+            client.setId(assignedClient.getId());
+            client.setFullName(assignedClient.getUserName());
+            client.setEmail(assignedClient.getEmail());
+            client.setPhoneNumber(assignedClient.getPhoneNumber());
+
+            assignedClientsListRes.add(client);
+        });
+
+        final var unassignedClientsList = userRepository.findAllByRoleCodeAndIdNot(Roles.RL003.name(), id);
+        final var unassignedClientsListRes = new ArrayList<ClientResDto>();
+
+        unassignedClientsList.forEach(unassignedClient -> {
+            final var client = new ClientResDto();
+
+            client.setId(unassignedClient.getId());
+            client.setFullName(unassignedClient.getUserName());
+            client.setEmail(unassignedClient.getEmail());
+            client.setPhoneNumber(unassignedClient.getPhoneNumber());
+            
+            unassignedClientsListRes.add(client);
+        });
+
+        clientListRes.setAssignedClients(assignedClientsListRes);
+        clientListRes.setUnassignedClients(unassignedClientsListRes);
+
+        return clientListRes;
     }
 
     @Override
