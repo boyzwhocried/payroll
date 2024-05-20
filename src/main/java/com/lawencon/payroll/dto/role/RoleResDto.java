@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 public class RoleResDto {
     private String id;
-    private String code;
-    private String name;
+    private String roleCode;
+    private String roleName;
 }
