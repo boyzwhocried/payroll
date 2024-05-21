@@ -1,5 +1,6 @@
 package com.lawencon.payroll.service.impl;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,10 +47,14 @@ public class PayrollServiceImpl implements PayrollService {
           final var clientName = clientAssignment.getClientId().getUserName();
           final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
           final var scheduleStatus = schedule.getScheduleRequestType().getScheduleRequestName();
+          final var monthYearFormatter = DateTimeFormatter.ofPattern("MM/yyyy");
+          final var createdAt = monthYearFormatter.format(schedule.getCreatedAt());
+
+          final var returnedPayrollDate = payrollDate+"/"+createdAt;
 
           payroll.setClientAssignmentId(clientAssignmentId);
           payroll.setClientName(clientName);
-          payroll.setPayrollDate(payrollDate);
+          payroll.setPayrollDate(returnedPayrollDate);
           payroll.setScheduleStatus(scheduleStatus);
 
           payrollRes.add(payroll);

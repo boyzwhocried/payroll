@@ -9,5 +9,5 @@ public class PayrollResDto {
   private String clientAssignmentId;
   private String clientName;
   private String scheduleStatus;
-  private Integer payrollDate;
+  private String payrollDate;
 }
