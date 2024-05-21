@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
     public List<RoleResDto> getRolesExcept() {
         final List<RoleResDto> rolesRes = new ArrayList<>();
         
-        final List<Role> roles = roleRepository.findByRoleCodeNot(Roles.RL001.name());
+        final List<Role> roles = roleRepository.findByRoleCodeNotIn(Roles.RL001.name(), Roles.RL000.name());
         roles.forEach(role -> {
             final RoleResDto roleRes = new RoleResDto();
     
