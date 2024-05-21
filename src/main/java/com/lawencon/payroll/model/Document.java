@@ -32,9 +32,9 @@ public class Document extends BaseModel {
     @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
-    @Column(name = "is_signed_by_sender")
-    private Boolean isSignedBySender;
+    @Column(name = "is_signed_by_client")
+    private Boolean isSignedByClient;
 
-    @Column(name = "is_signed_by_receiver")
-    private Boolean isSignedByReceiver;
+    @Column(name = "is_signed_by_ps")
+    private Boolean isSignedByPs;
 }

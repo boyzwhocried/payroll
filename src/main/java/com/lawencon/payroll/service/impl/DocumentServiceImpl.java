@@ -50,8 +50,8 @@ public class DocumentServiceImpl implements DocumentService {
             document.setDocumentDeadline(deadline);
             document.setActivity(activity);
             document.setSchedule(schedule);
-            document.setIsSignedBySender(false);
-            document.setIsSignedByReceiver(false);
+            document.setIsSignedByClient(false);
+            document.setIsSignedByPs(false);
             document.setCreatedBy(principalService.getUserId());
 
             document = documentRepository.save(document);
