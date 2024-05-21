@@ -16,10 +16,4 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String>
   List<Schedule> findByClientAssignmentId(String clientAssignmentId);
 
   Schedule findFirstByClientAssignmentIdOrderByCreatedAtDesc(String clientAssignmentId);
-
-  @Query(value = "SELECT sch FROM Schedule sch "
-                + "WHERE sch.clientAssignment.id = :clientAssignmentId "
-                + "ORDER BY "
-                + "sch.createdAt ")
-  Optional<Schedule> findLatestSchedule(@Param("clientAssignmentId") String clientAssignmentId);
 }

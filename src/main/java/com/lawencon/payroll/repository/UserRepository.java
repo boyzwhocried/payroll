@@ -40,4 +40,6 @@ public interface UserRepository extends JpaRepository<User, String>{
               + "WHERE ca.psId.id = :psId "
               + ") ")
   List<User> findAllByRoleCodeAndIdNot(@Param("roleCode") String roleCode, @Param("psId") String psId);
+
+  User findByRoleIdRoleCode(String roleCode);
 }
