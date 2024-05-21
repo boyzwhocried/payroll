@@ -5,9 +5,10 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UpdateDocumentReqDto {
+public class DocumentsResDto {
   private String documentId;
-  private String base64;
   private String documentName;
-  private String clientAssignmentId;
+  private String documentDirectory;
+  private String activity;
+  private String documentDeadline;
 }

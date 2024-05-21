@@ -17,7 +17,6 @@ import com.lawencon.payroll.repository.ScheduleRepository;
 import com.lawencon.payroll.repository.ScheduleRequestTypeRepository;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.DailySchedulerService;
-import com.lawencon.payroll.service.PrincipalService;
 import com.lawencon.payroll.util.FtpUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +31,6 @@ public class DailySchedulerServiceImpl implements DailySchedulerService {
   private final ScheduleRequestTypeRepository scheduleRequestTypeRepository;
   private final NotificationRepository notificationRepository;
   private final NotificationTemplateRepository notificationTemplateRepository;
-  private final PrincipalService principalService;
 
   @Scheduled(fixedRate = 1000 * 60 * 30)
   @Override

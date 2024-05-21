@@ -25,13 +25,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRequestTypeRepository scheduleRequestTypeRepository;
     private final PrincipalService principalService;
 
-
-    @Override
-    public Schedule loadById(String id) {
-        final var schedule = scheduleRepository.findById(id);
-        return schedule.get();
-    }
-
     @Override
     public Schedule addNewSchedule(String clientAssignmentId, String scheduleRequestTypeId) {
         final var schedule = new Schedule();
@@ -55,7 +48,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
 public List<ScheduleResDto> getByClientAssignmentId(String clientAssignmentId) {
         final var schedulesRes = new ArrayList<ScheduleResDto>(); 
-        final var schedules = scheduleRepository.findByClientAssignmentId(clientAssignmentId);
+        final var schedules = scheduleRepository.findByClientAssignmentIdOrderByCreatedAtDesc(clientAssignmentId);
 
         schedules.forEach(schedule -> {
             final var scheduleRes = new ScheduleResDto();

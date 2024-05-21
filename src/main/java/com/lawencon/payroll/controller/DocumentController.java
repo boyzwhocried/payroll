@@ -56,7 +56,7 @@ public class DocumentController {
     }
 
     @GetMapping("{scheduleId}")
-    public ResponseEntity<List<DocumentResDto>> getDocumentSchedule(@PathVariable String scheduleId) {
+    public ResponseEntity<DocumentResDto> getDocumentSchedule(@PathVariable String scheduleId) {
         final var documentRes = documentService.getDocumentsByScheduleId(scheduleId);
 
         return new ResponseEntity<>(documentRes, HttpStatus.OK);

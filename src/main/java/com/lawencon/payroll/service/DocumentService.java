@@ -19,5 +19,5 @@ public interface DocumentService {
 
     DocumentDownloadResDto downloadDocument(String id);
 
-    List<DocumentResDto> getDocumentsByScheduleId(String data);
+    DocumentResDto getDocumentsByScheduleId(String data);
 }
