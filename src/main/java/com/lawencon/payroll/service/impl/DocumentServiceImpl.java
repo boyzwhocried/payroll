@@ -113,10 +113,12 @@ public class DocumentServiceImpl implements DocumentService {
 
         var oldDocument = documentRepository.findById(data.getDocumentId()).get();
 
+        final var current = LocalDateTime.now();
+        final var month = current.getMonth() + "-" + current.getYear();
         final var base64 = data.getBase64();
-        final var userName = data.getUserName();
+        final var userId = data.getClientId();
         final var documentName = data.getDocumentName();
-        final var directory = "/Files/" + userName + "/";
+        final var directory = "/Files/" + userId + "/"+month+"/";
         
         final var remoteFile = directory + documentName;
 
