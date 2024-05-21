@@ -319,7 +319,7 @@ public class UserServiceImpl implements UserService {
         var counter = 0;
         final var oldVersion = user.getVer();
 
-        var name = Optional.ofNullable(data.getName());
+        var name = Optional.ofNullable(data.getUserName());
         if (name.isPresent()) {
             user.setUserName(name.get());
             counter++;
@@ -328,12 +328,6 @@ public class UserServiceImpl implements UserService {
         var email = Optional.ofNullable(data.getEmail());
         if (email.isPresent()) {
             user.setEmail(email.get());
-            counter++;
-        }
-
-        var password = Optional.ofNullable(data.getPassword());
-        if (password.isPresent()) {
-            user.setPassword(password.get());
             counter++;
         }
 
