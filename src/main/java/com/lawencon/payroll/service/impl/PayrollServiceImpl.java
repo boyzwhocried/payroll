@@ -14,7 +14,6 @@ import com.lawencon.payroll.repository.NotificationRepository;
 import com.lawencon.payroll.repository.NotificationTemplateRepository;
 import com.lawencon.payroll.repository.ScheduleRepository;
 import com.lawencon.payroll.repository.UserRepository;
-import com.lawencon.payroll.service.ClientAssignmentService;
 import com.lawencon.payroll.service.PayrollService;
 import com.lawencon.payroll.service.PrincipalService;
 
@@ -39,9 +38,9 @@ public class PayrollServiceImpl implements PayrollService {
 
       clientAssignments.forEach(clientAssignment -> {
           final var payroll = new PayrollResDto();
-          final var schedule = scheduleRepository.findLatestSchedule(clientAssignment.getId());
           
           final var clientAssignmentId = clientAssignment.getId();
+          final var schedule = scheduleRepository.findFirstByClientAssignmentIdOrderByCreatedAtDesc(clientAssignmentId);
           final var clientName = clientAssignment.getClientId().getUserName();
           final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
           final var scheduleStatus = schedule.getScheduleRequestType().getScheduleRequestName();
