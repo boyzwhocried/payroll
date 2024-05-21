@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.constant.NotificationCodes;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
+import com.lawencon.payroll.dto.notification.NotificationResDto;
 import com.lawencon.payroll.dto.payroll.PayrollResDto;
 import com.lawencon.payroll.model.Notification;
 import com.lawencon.payroll.repository.ClientAssignmentRepository;
@@ -102,4 +103,30 @@ public class PayrollServiceImpl implements PayrollService {
 
     return insertRes;
   }
+
+  @Override
+  public List<NotificationResDto> getNotification() {
+    final var notificationsRes = new ArrayList<NotificationResDto>();
+    final var userId = principalService.getUserId();
+    final var notifications = notificationRepository.findAllByUserId(userId);
+
+    notifications.forEach(notification -> {
+      final var notificationRes = new NotificationResDto();
+
+      final var id = notification.getId();
+      final var code = notification.getNotificationTemplate().getNotificationCode();
+      final var header = notification.getNotificationTemplate().getNotificationHeader();
+      final var body = notification.getNotificationTemplate().getNotificationBody();
+
+      notificationRes.setNotificationId(id);
+      notificationRes.setNotificationBody(code);
+      notificationRes.setNotificationCode(header);
+      notificationRes.setNotificationHeader(body);
+
+      notificationsRes.add(notificationRes);
+    });
+
+    return notificationsRes;
+  }
 }
+

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
+import com.lawencon.payroll.dto.notification.NotificationResDto;
 import com.lawencon.payroll.dto.payroll.PayrollResDto;
 import com.lawencon.payroll.dto.schedule.ScheduleResDto;
 import com.lawencon.payroll.service.PayrollService;
@@ -45,5 +46,12 @@ public class PayrollController {
     final var InsertResDto = payrollService.createPingNotification(clientId);
 
     return new ResponseEntity<>(InsertResDto, HttpStatus.OK);
+  }
+
+  @GetMapping("notifications")
+  public ResponseEntity<List<NotificationResDto>> getNotification() {
+    final var notificationRes = payrollService.getNotification();
+
+    return new ResponseEntity<>(notificationRes, HttpStatus.OK);
   }
 }
