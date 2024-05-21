@@ -25,5 +25,5 @@ public class Company extends BaseModel {
   private File companyLogo;
 
   @Column(name = "payroll_date", nullable = false)
-  private String payrollDate;
+  private Integer payrollDate;
 }

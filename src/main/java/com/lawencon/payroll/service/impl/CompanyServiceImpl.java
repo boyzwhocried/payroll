@@ -41,7 +41,7 @@ public class CompanyServiceImpl implements CompanyService {
         company.setCompanyName(data.getCompanyName());
         company.setCompanyLogo(file);
         
-        company.setPayrollDate(data.getPayrollDate());
+        company.setPayrollDate(Integer.valueOf(data.getPayrollDate()));
 
         company.setCreatedBy(id);
 
