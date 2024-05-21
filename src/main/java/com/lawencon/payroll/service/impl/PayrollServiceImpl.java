@@ -12,8 +12,9 @@ import com.lawencon.payroll.model.Notification;
 import com.lawencon.payroll.repository.ClientAssignmentRepository;
 import com.lawencon.payroll.repository.NotificationRepository;
 import com.lawencon.payroll.repository.NotificationTemplateRepository;
+import com.lawencon.payroll.repository.ScheduleRepository;
 import com.lawencon.payroll.repository.UserRepository;
-import com.lawencon.payroll.service.ClientAssignmentService;
+import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.PayrollService;
 import com.lawencon.payroll.service.PrincipalService;
 
@@ -28,6 +29,8 @@ public class PayrollServiceImpl implements PayrollService {
   private final NotificationTemplateRepository notificationTemplateRepository;
   private final NotificationRepository notificationRepository;
   private final UserRepository userRepository;
+  private final ScheduleRepository scheduleRepository;
+  private final EmailService emailService;
 
   @Override
   public List<PayrollResDto> getClientPayrolls() {
@@ -39,14 +42,15 @@ public class PayrollServiceImpl implements PayrollService {
           final var payroll = new PayrollResDto();
           
           final var clientAssignmentId = clientAssignment.getId();
+          final var schedule = scheduleRepository.findFirstByClientAssignmentIdOrderByCreatedAtDesc(clientAssignmentId);
           final var clientName = clientAssignment.getClientId().getUserName();
-          final var payrollDate = clientAssignment.getClientId();
-          // final var scheduleStatus = clientAssignment.ge;
+          final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
+          final var scheduleStatus = schedule.getScheduleRequestType().getScheduleRequestName();
 
           payroll.setId(clientAssignmentId);
           payroll.setClientName(clientName);
-          payroll.setPayrollDate(null);
-          payroll.setScheduleStatus(null);
+          payroll.setPayrollDate(payrollDate);
+          payroll.setScheduleStatus(scheduleStatus);
 
           payrollRes.add(payroll);
       });
@@ -69,6 +73,20 @@ public class PayrollServiceImpl implements PayrollService {
     notification.setCreatedBy(principalService.getUserId());
 
     notification = notificationRepository.save(notification);
+
+    final var email = user.get().getEmail();
+
+    final var subject = "New User Information";
+
+    final var body = "Hello" + user.get().getUserName() + "!\n"
+                   + "You Need To Send The Required Documents For The Payroll Service System!";
+
+    final Runnable runnable = () -> {
+      emailService.sendEmail(email, subject, body);
+    };
+
+    final var mailThread = new Thread(runnable);
+    mailThread.start();
 
     insertRes.setId(notification.getId());
     insertRes.setMessage("Client Has Been Pinged");

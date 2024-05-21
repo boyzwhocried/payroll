@@ -44,4 +44,6 @@ public interface UserRepository extends JpaRepository<User, String>{
   @Query(value ="SELECT us FROM User us "
               + "WHERE us.isActive = TRUE ")
   List<User> findAll();
+  
+  User findByRoleIdRoleCode(String roleCode);
 }
