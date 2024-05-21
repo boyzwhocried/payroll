@@ -17,7 +17,6 @@ import com.lawencon.payroll.repository.CompanyRepository;
 import com.lawencon.payroll.service.CompanyService;
 import com.lawencon.payroll.service.FileService;
 import com.lawencon.payroll.service.PrincipalService;
-import com.lawencon.payroll.util.DateUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -81,6 +80,7 @@ public class CompanyServiceImpl implements CompanyService {
         var name = Optional.ofNullable(data.getCompanyName());
         if (name.isPresent()) {
             company.setCompanyName(name.get());
+            company.setUpdatedBy(principalService.getUserId());
         }
 
         var content = Optional.ofNullable(data.getCompanyLogoContent());
@@ -94,13 +94,11 @@ public class CompanyServiceImpl implements CompanyService {
             company.setCompanyLogo(file);
         }
 
-        company.setUpdatedBy(principalService.getUserId());
-
         company = companyRepository.saveAndFlush(company);
 
         final var updateRes = new UpdateResDto();
 
-        if (content.isPresent()) {
+        if (name.isPresent()) {
             updateRes.setVersion(company.getVer());
         }
         

@@ -316,27 +316,31 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UpdateResDto updateUser(UpdateUserReqDto data) {
         var user = userRepository.findById(data.getId()).get();
-
+        var counter = 0;
         final var oldVersion = user.getVer();
 
         var name = Optional.ofNullable(data.getName());
         if (name.isPresent()) {
             user.setUserName(name.get());
+            counter++;
         }
 
         var email = Optional.ofNullable(data.getEmail());
         if (email.isPresent()) {
             user.setEmail(email.get());
+            counter++;
         }
 
         var password = Optional.ofNullable(data.getPassword());
         if (password.isPresent()) {
             user.setPassword(password.get());
+            counter++;
         }
 
         var phoneNo = Optional.ofNullable(data.getPhoneNo());
         if (phoneNo.isPresent()) {
             user.setPhoneNumber(phoneNo.get());
+            counter++;
         }
 
         var content = Optional.ofNullable(data.getFileContent());
@@ -351,7 +355,9 @@ public class UserServiceImpl implements UserService {
             user.setProfilePictureId(file);
         }
 
-        user.setUpdatedBy(principalService.getUserId());
+        if(counter > 0) {
+            user.setUpdatedBy(principalService.getUserId());
+        }
 
         user = userRepository.saveAndFlush(user);
 
