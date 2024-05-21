@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
+import com.lawencon.payroll.dto.document.OldDocumentResDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentScheduleReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
@@ -60,6 +61,13 @@ public class DocumentController {
         final var documentRes = documentService.getDocumentsByScheduleId(scheduleId);
 
         return new ResponseEntity<>(documentRes, HttpStatus.OK);
+    }
+
+    @GetMapping("original/{scheduleId}")
+    public ResponseEntity<List<OldDocumentResDto>> getOldDocumentsData(@PathVariable String scheduleId) {
+        final var oldDocumentsRes = documentService.getOldDocuments(scheduleId);
+
+        return new ResponseEntity<>(oldDocumentsRes, HttpStatus.OK);
     }
 
     @PatchMapping("schedule")

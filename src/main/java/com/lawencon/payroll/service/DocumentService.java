@@ -5,6 +5,7 @@ import java.util.List;
 import com.lawencon.payroll.dto.document.DocumentDownloadResDto;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
+import com.lawencon.payroll.dto.document.OldDocumentResDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentScheduleReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
@@ -20,4 +21,6 @@ public interface DocumentService {
     DocumentDownloadResDto downloadDocument(String id);
 
     DocumentResDto getDocumentsByScheduleId(String data);
+
+    List<OldDocumentResDto> getOldDocuments(String scheduleId);
 }
