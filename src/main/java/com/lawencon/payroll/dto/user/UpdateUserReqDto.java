@@ -7,9 +7,8 @@ import lombok.Setter;
 @Getter
 public class UpdateUserReqDto {
     private String id;
-    private String name;
+    private String userName;
     private String email;
-    private String password;
     private String phoneNo;
     private String fileContent;
     private String fileExtension;

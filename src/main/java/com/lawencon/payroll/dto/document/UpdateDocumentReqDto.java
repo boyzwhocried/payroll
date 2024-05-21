@@ -10,4 +10,6 @@ public class UpdateDocumentReqDto {
   private String base64;
   private String documentName;
   private String clientAssignmentId;
+  private Boolean isSignedByClient;
+  private Boolean isSignedByPS;
 }

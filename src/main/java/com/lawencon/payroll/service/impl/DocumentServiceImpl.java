@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -142,6 +143,12 @@ public class DocumentServiceImpl implements DocumentService {
         oldDocument.setDocumentDirectory(directory);
 
         oldDocument.setUpdatedBy(principalService.getUserId());
+
+        if(Optional.ofNullable(data.getIsSignedByClient()).isPresent()) {
+            oldDocument.setIsSignedByClient(true);
+        }else if(data.getIsSignedByPS()) {
+            oldDocument.setIsSignedByPs(true);
+        }
 
         oldDocument = documentRepository.saveAndFlush(oldDocument); 
 
