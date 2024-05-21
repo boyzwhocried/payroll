@@ -8,5 +8,5 @@ import com.lawencon.payroll.dto.payroll.PayrollResDto;
 public interface PayrollService {
   List<PayrollResDto> getClientPayrolls();
 
-  InsertResDto createPingNotification(String clientId);
+  InsertResDto createPingNotification(String clientAssignmentId);
 }

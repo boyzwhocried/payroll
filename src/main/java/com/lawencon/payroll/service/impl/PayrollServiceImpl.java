@@ -64,10 +64,14 @@ public class PayrollServiceImpl implements PayrollService {
   }
 
   @Override
-  public InsertResDto createPingNotification(String clientId) {
+  public InsertResDto createPingNotification(String clientAssignmentId) {
     final var insertRes = new InsertResDto();
 
     var notification = new Notification();
+
+    final var clientAssignment = clientAssignmentRepository.findById(clientAssignmentId);
+
+    final var clientId = clientAssignment.get().getClientId().getId();
 
     final var user = userRepository.findById(clientId);
 
