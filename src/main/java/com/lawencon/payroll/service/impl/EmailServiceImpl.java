@@ -6,15 +6,13 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.service.EmailService;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
-    @NonNull
-    private JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
 
     @Override
     public void sendEmail(String to, String subject, String body) {

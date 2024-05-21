@@ -12,6 +12,7 @@ import com.lawencon.payroll.model.Notification;
 import com.lawencon.payroll.repository.ClientAssignmentRepository;
 import com.lawencon.payroll.repository.NotificationRepository;
 import com.lawencon.payroll.repository.NotificationTemplateRepository;
+import com.lawencon.payroll.repository.ScheduleRepository;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.ClientAssignmentService;
 import com.lawencon.payroll.service.PayrollService;
@@ -28,6 +29,7 @@ public class PayrollServiceImpl implements PayrollService {
   private final NotificationTemplateRepository notificationTemplateRepository;
   private final NotificationRepository notificationRepository;
   private final UserRepository userRepository;
+  private final ScheduleRepository scheduleRepository;
 
   @Override
   public List<PayrollResDto> getClientPayrolls() {
@@ -37,16 +39,17 @@ public class PayrollServiceImpl implements PayrollService {
 
       clientAssignments.forEach(clientAssignment -> {
           final var payroll = new PayrollResDto();
+          final var schedule = scheduleRepository.findLatestSchedule(clientAssignment.getId());
           
           final var clientAssignmentId = clientAssignment.getId();
           final var clientName = clientAssignment.getClientId().getUserName();
-          final var payrollDate = clientAssignment.getClientId();
-          // final var scheduleStatus = clientAssignment.ge;
+          final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
+          final var scheduleStatus = schedule.getScheduleRequestType().getScheduleRequestName();
 
           payroll.setId(clientAssignmentId);
           payroll.setClientName(clientName);
-          payroll.setPayrollDate(null);
-          payroll.setScheduleStatus(null);
+          payroll.setPayrollDate(payrollDate);
+          payroll.setScheduleStatus(scheduleStatus);
 
           payrollRes.add(payroll);
       });
