@@ -13,4 +13,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String>
   List<Schedule> findByClientAssignmentIdOrderByCreatedAtDesc(String clientAssignmentId);
 
   Schedule findFirstByClientAssignmentIdOrderByCreatedAtDesc(String clientAssignmentId);
+
 }

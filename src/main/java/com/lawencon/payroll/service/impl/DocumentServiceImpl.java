@@ -11,6 +11,7 @@ import com.lawencon.payroll.dto.document.DocumentDownloadResDto;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
 import com.lawencon.payroll.dto.document.DocumentsResDto;
+import com.lawencon.payroll.dto.document.OldDocumentResDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentReqDto;
 import com.lawencon.payroll.dto.document.UpdateDocumentScheduleReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
@@ -68,7 +69,7 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentResDto getDocumentsByScheduleId(String scheduleId) {
         final var documentRes = new DocumentResDto();
         final var documentsRes = new ArrayList<DocumentsResDto>();
-        final var documents = documentRepository.getByScheduleId(scheduleId);
+        final var documents = documentRepository.findByScheduleId(scheduleId);
         final var schedule = scheduleRepository.findById(scheduleId);
         final var clientAssignmentId = schedule.get().getClientAssignment().getId();
         documentRes.setClientAssignmentId(clientAssignmentId);
@@ -164,5 +165,26 @@ public class DocumentServiceImpl implements DocumentService {
         downloadRes.setFileBytes(FtpUtil.downloadFile(remoteFile));
 
         return downloadRes;
+    }
+
+    @Override
+    public List<OldDocumentResDto> getOldDocuments(String scheduleId) {
+        final var oldDocumentsRes = new ArrayList<OldDocumentResDto>();
+        final var documents = documentRepository.findByScheduleId(scheduleId);
+        documents.forEach(document -> {
+            final var oldDocumentRes = new OldDocumentResDto();
+
+            final var id = document.getId();
+            final var activity = document.getActivity();
+            final var deadline = document.getDocumentDeadline().toString();
+
+            oldDocumentRes.setActivity(activity);
+            oldDocumentRes.setDocumentDeadline(deadline);
+            oldDocumentRes.setDocumentId(id);
+
+            oldDocumentsRes.add(oldDocumentRes);
+        });
+
+        return oldDocumentsRes;
     }
 }
