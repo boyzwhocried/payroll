@@ -29,23 +29,25 @@ public class DailySchedulerServiceImpl implements DailySchedulerService {
   @Scheduled(fixedRate = 1000 * 60 * 30)
   @Override
   public void addMonthlyScheduleJob() {
-    System.out.println("Masok!");
-    final var schedule = new Schedule();
-    final var clientAssignments = clientAssignmentRepository.findAll();
-    final var system = userRepository.findByRoleIdRoleCode(Roles.RL000.name());
-    final var scheduleRequestType = scheduleRequestTypeRepository.findByScheduleRequestCode(ScheduleRequestTypes.SQT01.name());
-
-    clientAssignments.forEach(clientAssignment -> {
-      final var latestSchedule = scheduleRepository.findFirstByClientAssignmentIdOrderByCreatedAtDesc(clientAssignment.getId());
-
-      if(latestSchedule == null || latestSchedule.getCreatedAt().getMonthValue() < LocalDateTime.now().getMonthValue()) {
-        schedule.setCreatedBy(system.getId());
-        schedule.setClientAssignment(clientAssignment);
-        schedule.setScheduleRequestType(scheduleRequestType);
-    
-        scheduleRepository.save(schedule);
-        System.out.println("Payroll Schedule Created!");
-      }
-    });
+    final var currentTime = LocalDateTime.now().getHour();
+    if(currentTime >=0 && currentTime <=1){
+      final var schedule = new Schedule();
+      final var clientAssignments = clientAssignmentRepository.findAll();
+      final var system = userRepository.findByRoleIdRoleCode(Roles.RL000.name());
+      final var scheduleRequestType = scheduleRequestTypeRepository.findByScheduleRequestCode(ScheduleRequestTypes.SQT01.name());
+      
+      clientAssignments.forEach(clientAssignment -> {
+        final var latestSchedule = scheduleRepository.findFirstByClientAssignmentIdOrderByCreatedAtDesc(clientAssignment.getId());
+        
+        if(latestSchedule == null || latestSchedule.getCreatedAt().getMonthValue() < LocalDateTime.now().getMonthValue()) {
+          schedule.setCreatedBy(system.getId());
+          schedule.setClientAssignment(clientAssignment);
+          schedule.setScheduleRequestType(scheduleRequestType);
+          
+          scheduleRepository.save(schedule);
+          System.out.println("Payroll Schedule Created!");
+        }
+      });
+    }
   }
 }
