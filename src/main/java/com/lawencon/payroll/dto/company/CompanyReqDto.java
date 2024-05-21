@@ -9,5 +9,5 @@ public class CompanyReqDto {
     private String companyName;
     private String fileContent;
     private String fileExtension;
-    private Integer payrollDate;
+    private String payrollDate;
 }
