@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
             company = companyService.findByCompanyName("PT. Lawencon International");
         }
 
-        user.setUserName(data.getFullName());
+        user.setUserName(data.getUserName());
         user.setEmail(email);
         user.setPassword(password);
         user.setRoleId(role);

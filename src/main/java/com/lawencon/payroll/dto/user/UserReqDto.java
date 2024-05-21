@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserReqDto {
-    private String fullName;
+    private String userName;
     private String email;
     private String phoneNumber;
     private String roleId;

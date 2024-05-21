@@ -63,7 +63,7 @@ public List<ScheduleResDto> getByClientAssignmentId(String clientAssignmentId) {
             final var scheduleId = schedule.getId();
             final var payrollDate = schedule.getCreatedAt().toString();
 
-            scheduleRes.setId(scheduleId);
+            scheduleRes.setScheduleId(scheduleId);
             scheduleRes.setPayrollDate(payrollDate);
 
             schedulesRes.add(scheduleRes);

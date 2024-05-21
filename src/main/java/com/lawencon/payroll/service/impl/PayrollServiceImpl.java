@@ -47,7 +47,7 @@ public class PayrollServiceImpl implements PayrollService {
           final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
           final var scheduleStatus = schedule.getScheduleRequestType().getScheduleRequestName();
 
-          payroll.setId(clientAssignmentId);
+          payroll.setClientAssignmentId(clientAssignmentId);
           payroll.setClientName(clientName);
           payroll.setPayrollDate(payrollDate);
           payroll.setScheduleStatus(scheduleStatus);

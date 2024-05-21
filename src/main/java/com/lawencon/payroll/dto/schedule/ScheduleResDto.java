@@ -6,6 +6,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ScheduleResDto {
-  private String id;
+  private String scheduleId;
   private String payrollDate;
 }
