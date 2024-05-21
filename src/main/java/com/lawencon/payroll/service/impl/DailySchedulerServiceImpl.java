@@ -39,7 +39,7 @@ public class DailySchedulerServiceImpl implements DailySchedulerService {
   public void addMonthlyScheduleJob() {
     final var currentTime = LocalDateTime.now().getHour();
     
-    if(currentTime >=0 && currentTime <=1){
+    if(currentTime >= 0 && currentTime <= 1 ){
       final var schedule = new Schedule();
       final var clientAssignments = clientAssignmentRepository.findAll();
       final var system = userRepository.findByRoleIdRoleCode(Roles.RL000.name());
@@ -59,6 +59,8 @@ public class DailySchedulerServiceImpl implements DailySchedulerService {
           schedule.setScheduleRequestType(scheduleRequestType);
           
           notification.setUser(clientAssignment.getPsId());
+
+          FtpUtil.createNestedDirectory(clientAssignment.getClientId().getId());
 
           scheduleRepository.save(schedule);
           notificationRepository.save(notification);
