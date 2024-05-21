@@ -9,5 +9,5 @@ public class UpdateDocumentReqDto {
   private String documentId;
   private String base64;
   private String documentName;
-  private String clientId;
+  private String clientAssignmentId;
 }

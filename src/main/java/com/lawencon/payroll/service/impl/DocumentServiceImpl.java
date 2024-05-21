@@ -16,11 +16,11 @@ import com.lawencon.payroll.dto.document.UpdateDocumentScheduleReqDto;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.generalResponse.UpdateResDto;
 import com.lawencon.payroll.model.Document;
+import com.lawencon.payroll.repository.ClientAssignmentRepository;
 import com.lawencon.payroll.repository.DocumentRepository;
 import com.lawencon.payroll.repository.ScheduleRepository;
 import com.lawencon.payroll.service.DocumentService;
 import com.lawencon.payroll.service.PrincipalService;
-import com.lawencon.payroll.service.ScheduleService;
 import com.lawencon.payroll.util.FtpUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -31,6 +31,7 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final ScheduleRepository scheduleRepository;
     private final PrincipalService principalService;
+    private final ClientAssignmentRepository clientAssignmentRepository;
 
     @Override
     public InsertResDto createDocuments(DocumentReqDto data) {
@@ -123,8 +124,13 @@ public class DocumentServiceImpl implements DocumentService {
         final var current = LocalDateTime.now();
         final var month = current.getMonth() + "-" + current.getYear();
         final var base64 = data.getBase64();
-        final var userId = data.getClientId();
+        final var clientAssignmentId = data.getClientAssignmentId();
         final var documentName = data.getDocumentName();
+
+        final var clientAssignment = clientAssignmentRepository.findById(clientAssignmentId);
+
+        final var userId = clientAssignment.get().getClientId().getId();
+
         final var directory = "/Files/" + userId + "/"+month+"/";
         
         final var remoteFile = directory + documentName;
