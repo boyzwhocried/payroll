@@ -92,7 +92,7 @@ public class FtpUtil {
 		return base;
 	}
 
-	public static void createDirectory(String userName) {
+	public static void createDirectory(String userId) {
 		final String server = "192.168.20.34";
 		final int port = 21;
 		final String user = "gladosbot1@outlook.com";
@@ -108,7 +108,7 @@ public class FtpUtil {
 
 			System.out.println("======> Create New Directory");
 
-			final String directory = "/" + userName + "/";
+			final String directory = "/" + userId + "/";
 
 			boolean success = ftpClient.makeDirectory(directory);
 
@@ -131,7 +131,7 @@ public class FtpUtil {
 	}
 
 	public static void createNestedDirectory(String directory) {
-		final String server = "192.168.20.74";
+		final String server = "192.168.20.34";
 		final int port = 21;
 		final String user = "gladosbot1@outlook.com";
 		final String pass = "forScienceChell";
@@ -150,7 +150,7 @@ public class FtpUtil {
 
 			final var month = current.getMonth() + "-" + current.getYear();
 
-			final String nestedDirectory = directory + month + "/";
+			final String nestedDirectory = directory +"/"+ month + "/";
 
 			boolean success = false;
 
