@@ -11,4 +11,6 @@ public class DocumentsResDto {
   private String documentDirectory;
   private String activity;
   private String documentDeadline;
+  private Boolean isSignedByClient;
+  private Boolean isSignedByPs;
 }
