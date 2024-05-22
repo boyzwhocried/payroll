@@ -42,8 +42,9 @@ public interface UserRepository extends JpaRepository<User, String>{
   List<User> findAllByRoleCodeAndIdNot(@Param("roleCode") String roleCode, @Param("psId") String psId);
 
   @Query(value ="SELECT us FROM User us "
-              + "WHERE us.isActive = TRUE ")
-  List<User> findAll();
+              + "WHERE us.isActive = TRUE "
+              + "AND us.roleId.roleCode != :adminRoleCode ")
+  List<User> getUsers(@Param("adminRoleCode") String adminRoleCode);
   
   User findByRoleIdRoleCode(String roleCode);
 }

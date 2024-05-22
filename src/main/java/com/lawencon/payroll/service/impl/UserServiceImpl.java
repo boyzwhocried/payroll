@@ -169,7 +169,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResDto> getAllUsers() {
         final var usersRes = new ArrayList<UserResDto>();
 
-        final var users = userRepository.findAll();
+        final var users = userRepository.getUsers("RL001");
         users.forEach(user -> {
             final var userRes = new UserResDto();
 
