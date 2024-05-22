@@ -263,6 +263,7 @@ public class UserServiceImpl implements UserService {
             unassignedClientsListRes.add(client);
         });
 
+        clientListRes.setPsUserName(userRepository.getUserNameById(id));
         clientListRes.setAssignedClients(assignedClientsListRes);
         clientListRes.setUnassignedClients(unassignedClientsListRes);
 

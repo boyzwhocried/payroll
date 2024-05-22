@@ -19,6 +19,10 @@ public interface UserRepository extends JpaRepository<User, String>{
               + "WHERE r.roleCode = :roleCode ")
   List<User> findByRoleRoleCode(@Param("roleCode") String roleCode);
   
+  @Query(value = "SELECT u.userName FROM User u "
+              + "WHERE u.id = :id ")
+  String getUserNameById(@Param("id") String id);
+
   @Query(value = "SELECT cl FROM User cl "
               + "INNER JOIN Role ro "
               + "ON cl.roleId.id = ro.id "

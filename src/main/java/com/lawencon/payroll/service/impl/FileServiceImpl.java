@@ -1,5 +1,7 @@
 package com.lawencon.payroll.service.impl;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -75,6 +77,11 @@ public class FileServiceImpl implements FileService {
         final String remoteFile = "/Files/attachment22.png";
 
         return FtpUtil.downloadFile(remoteFile);
+    }
+
+    @Override
+    public File getById(String id) {
+        return fileRepository.findById(id).get();
     }
 
 }
