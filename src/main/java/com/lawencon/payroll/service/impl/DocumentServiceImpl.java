@@ -83,12 +83,16 @@ public class DocumentServiceImpl implements DocumentService {
             final var deadline = document.getDocumentDeadline().toString();
             final var directory = document.getDocumentDirectory();
             final var name = document.getDocumentName();
+            final var isSignedByClient = document.getIsSignedByClient();
+            final var isSignedByPs = document.getIsSignedByPs();
             
             newDocumentRes.setDocumentId(id);
             newDocumentRes.setActivity(activity);
             newDocumentRes.setDocumentDeadline(deadline);
             newDocumentRes.setDocumentDirectory(directory);
             newDocumentRes.setDocumentName(name);
+            newDocumentRes.setIsSignedByClient(isSignedByClient);
+            newDocumentRes.setIsSignedByPs(isSignedByPs);
 
             documentsRes.add(newDocumentRes);
         });
