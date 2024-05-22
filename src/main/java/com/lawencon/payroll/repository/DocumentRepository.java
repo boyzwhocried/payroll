@@ -10,4 +10,5 @@ import com.lawencon.payroll.model.Document;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, String> {
     List<Document> findByScheduleId(String scheduleId);
+    List<Document> findByScheduleIdOrderByDocumentDeadlineAsc(String scheduleId);
 }

@@ -7,5 +7,8 @@ import lombok.Setter;
 @Getter
 public class ScheduleResDto {
   private String scheduleId;
+  private String scheduleStatusName;
+  private String scheduleStatusCode;
   private String payrollDate;
+  private Boolean canBeRescheduled;
 }

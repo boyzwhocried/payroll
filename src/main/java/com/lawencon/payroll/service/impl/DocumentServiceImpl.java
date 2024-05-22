@@ -70,7 +70,7 @@ public class DocumentServiceImpl implements DocumentService {
     public DocumentResDto getDocumentsByScheduleId(String scheduleId) {
         final var documentRes = new DocumentResDto();
         final var documentsRes = new ArrayList<DocumentsResDto>();
-        final var documents = documentRepository.findByScheduleId(scheduleId);
+        final var documents = documentRepository.findByScheduleIdOrderByDocumentDeadlineAsc(scheduleId);
         final var schedule = scheduleRepository.findById(scheduleId);
         final var clientAssignmentId = schedule.get().getClientAssignment().getId();
         documentRes.setClientAssignmentId(clientAssignmentId);
@@ -150,7 +150,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         if(Optional.ofNullable(data.getIsSignedByClient()).isPresent()) {
             oldDocument.setIsSignedByClient(true);
-        }else if(data.getIsSignedByPS()) {
+        }else if(Optional.ofNullable(data.getIsSignedByPS()).isPresent()) {
             oldDocument.setIsSignedByPs(true);
         }
 

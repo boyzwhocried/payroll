@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.lawencon.payroll.dto.schedule.ScheduleResDto;
 import com.lawencon.payroll.model.Schedule;
 import com.lawencon.payroll.repository.ClientAssignmentRepository;
+import com.lawencon.payroll.repository.DocumentRepository;
 import com.lawencon.payroll.repository.ScheduleRepository;
 import com.lawencon.payroll.repository.ScheduleRequestTypeRepository;
 import com.lawencon.payroll.service.PrincipalService;
@@ -24,6 +25,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ClientAssignmentRepository clientAssignmentRepository;
     private final ScheduleRequestTypeRepository scheduleRequestTypeRepository;
     private final PrincipalService principalService;
+    private final DocumentRepository documentRepository;
 
     @Override
     public Schedule addNewSchedule(String clientAssignmentId, String scheduleRequestTypeId) {
@@ -54,10 +56,29 @@ public List<ScheduleResDto> getByClientAssignmentId(String clientAssignmentId) {
             final var scheduleRes = new ScheduleResDto();
 
             final var scheduleId = schedule.getId();
+            final var scheduleStatusName = schedule.getScheduleRequestType().getScheduleRequestName();
+            final var scheduleStatusCode = schedule.getScheduleRequestType().getScheduleRequestCode();
             final var payrollDate = schedule.getCreatedAt().toString();
 
             scheduleRes.setScheduleId(scheduleId);
+            scheduleRes.setScheduleStatusName(scheduleStatusName);
+            scheduleRes.setScheduleStatusCode(scheduleStatusCode);
             scheduleRes.setPayrollDate(payrollDate);
+            scheduleRes.setCanBeRescheduled(true);
+
+            final var documents = documentRepository.findByScheduleIdOrderByDocumentDeadlineAsc(scheduleId);
+
+            if(documents.size() == 0) {
+                scheduleRes.setCanBeRescheduled(false);
+            }else {
+                for(var document : documents) {
+                    if(document.getDocumentDirectory().isEmpty()) {
+                        scheduleRes.setCanBeRescheduled(false);
+                        break;
+                    }
+                }
+            }
+
 
             schedulesRes.add(scheduleRes);
         });
