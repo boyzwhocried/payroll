@@ -27,6 +27,7 @@ import com.lawencon.payroll.dto.user.UpdateUserReqDto;
 import com.lawencon.payroll.dto.user.UserReqDto;
 import com.lawencon.payroll.dto.user.UserResDto;
 import com.lawencon.payroll.model.Company;
+import com.lawencon.payroll.model.Role;
 import com.lawencon.payroll.model.User;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.ClientAssignmentService;
@@ -331,7 +332,7 @@ public class UserServiceImpl implements UserService {
             counter++;
         }
 
-        var phoneNo = Optional.ofNullable(data.getPhoneNo());
+        var phoneNo = Optional.ofNullable(data.getPhoneNumber());
         if (phoneNo.isPresent()) {
             user.setPhoneNumber(phoneNo.get());
             counter++;
@@ -347,6 +348,13 @@ public class UserServiceImpl implements UserService {
             file = fileService.updateFile(file);
 
             user.setProfilePictureId(file);
+        }
+
+        var inputRole = Optional.ofNullable(data.getRoleId());
+        if(inputRole.isPresent()) {
+            final var role = roleService.getById(inputRole.get());
+
+            user.setRoleId(role);
         }
 
         if(counter > 0) {
