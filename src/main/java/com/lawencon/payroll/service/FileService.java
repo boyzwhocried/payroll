@@ -14,4 +14,6 @@ public interface FileService {
     InsertResDto uploadFile(FileReqDto data);
 
     byte[] downloadFile(String id);
+
+    File getById(String id);
 }
