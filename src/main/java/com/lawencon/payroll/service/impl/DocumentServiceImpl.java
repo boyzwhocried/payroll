@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.lawencon.payroll.constant.ScheduleRequestTypes;
 import com.lawencon.payroll.dto.document.DocumentDownloadResDto;
 import com.lawencon.payroll.dto.document.DocumentReqDto;
 import com.lawencon.payroll.dto.document.DocumentResDto;
@@ -21,6 +22,7 @@ import com.lawencon.payroll.model.Document;
 import com.lawencon.payroll.repository.ClientAssignmentRepository;
 import com.lawencon.payroll.repository.DocumentRepository;
 import com.lawencon.payroll.repository.ScheduleRepository;
+import com.lawencon.payroll.repository.ScheduleRequestTypeRepository;
 import com.lawencon.payroll.service.DocumentService;
 import com.lawencon.payroll.service.PrincipalService;
 import com.lawencon.payroll.util.FtpUtil;
@@ -33,27 +35,30 @@ public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
     private final ScheduleRepository scheduleRepository;
     private final PrincipalService principalService;
+    private final ScheduleRequestTypeRepository scheduleRequestTypeRepository;
     private final ClientAssignmentRepository clientAssignmentRepository;
 
     @Override
     public InsertResDto createDocuments(DocumentReqDto data) {
         final var insertRes = new InsertResDto();
 
-        final var schedule = scheduleRepository.findById(data.getScheduleId());
+        final var schedule = scheduleRepository.findById(data.getScheduleId()).get();
         
         final var documentsReq = data.getDocumentsReqDto();
 
+        final var scheduleRequestType = scheduleRequestTypeRepository.findByScheduleRequestCode(ScheduleRequestTypes.SQT02.name());
+
+        schedule.setScheduleRequestType(scheduleRequestType);
+
         documentsReq.forEach(documentReq -> {
 
-		    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            final var deadline = LocalDateTime.parse(documentReq.getDocumentDeadline(), formatter);
+            final var deadline = LocalDateTime.parse(documentReq.getDocumentDeadline());
             final var activity = documentReq.getActivity();
 
             var document = new Document();
             document.setDocumentDeadline(deadline);
             document.setActivity(activity);
-            document.setSchedule(schedule.get());
+            document.setSchedule(schedule);
             document.setIsSignedByClient(false);
             document.setIsSignedByPs(false);
             document.setCreatedBy(principalService.getUserId());
@@ -61,6 +66,8 @@ public class DocumentServiceImpl implements DocumentService {
             document = documentRepository.save(document);
         });
         
+        scheduleRepository.saveAndFlush(schedule);
+
         insertRes.setId(null);
         insertRes.setMessage("Document(s) have been made!");
         return insertRes;
@@ -148,10 +155,10 @@ public class DocumentServiceImpl implements DocumentService {
 
         oldDocument.setUpdatedBy(principalService.getUserId());
 
-        if(Optional.ofNullable(data.getIsSignedByClient()).isPresent()) {
-            oldDocument.setIsSignedByClient(true);
-        }else if(Optional.ofNullable(data.getIsSignedByPS()).isPresent()) {
+        if(data.getIsSignedByPS()) {
             oldDocument.setIsSignedByPs(true);
+        }else if(data.getIsSignedByClient()) {
+            oldDocument.setIsSignedByClient(true);
         }
 
         oldDocument = documentRepository.saveAndFlush(oldDocument); 

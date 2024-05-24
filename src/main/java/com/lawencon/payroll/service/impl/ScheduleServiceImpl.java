@@ -2,9 +2,11 @@ package com.lawencon.payroll.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.lawencon.payroll.constant.ScheduleRequestTypes;
 import com.lawencon.payroll.dto.schedule.ScheduleResDto;
 import com.lawencon.payroll.model.Schedule;
 import com.lawencon.payroll.repository.ClientAssignmentRepository;
@@ -32,12 +34,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         final var schedule = new Schedule();
 
         final var clientAssignment = clientAssignmentRepository.findById(clientAssignmentId);
-        final var scheduleRequestType = scheduleRequestTypeRepository.findById(clientAssignmentId);
+        final var scheduleRequestType = scheduleRequestTypeRepository.findByScheduleRequestCode(ScheduleRequestTypes.SQT01.name());
 
         final var userId = clientAssignment.get().getClientId().getId();
 
         schedule.setClientAssignment(clientAssignment.get());
-        schedule.setScheduleRequestType(scheduleRequestType.get());
+        schedule.setScheduleRequestType(scheduleRequestType);
         schedule.setCreatedBy(principalService.getUserId());
 
         FtpUtil.createDirectory(userId+"/"+"test1");
@@ -72,7 +74,7 @@ public List<ScheduleResDto> getByClientAssignmentId(String clientAssignmentId) {
                 scheduleRes.setCanBeRescheduled(false);
             }else {
                 for(var document : documents) {
-                    if(document.getDocumentDirectory().isEmpty()) {
+                    if(Optional.ofNullable(document.getDocumentDirectory()).isEmpty()) {
                         scheduleRes.setCanBeRescheduled(false);
                         break;
                     }
