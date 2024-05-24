@@ -41,24 +41,27 @@ public class PayrollServiceImpl implements PayrollService {
       final var clientAssignments = clientAssignmentRepository.getByPsId(psId);
 
       clientAssignments.forEach(clientAssignment -> {
-          final var payroll = new PayrollResDto();
-          
           final var clientAssignmentId = clientAssignment.getId();
           final var schedule = scheduleRepository.findFirstByClientAssignmentIdOrderByCreatedAtDesc(clientAssignmentId);
-          final var clientName = clientAssignment.getClientId().getUserName();
-          final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
-          final var scheduleStatus = schedule.getScheduleRequestType().getScheduleRequestName();
-          final var monthYearFormatter = DateTimeFormatter.ofPattern("MM/yyyy");
-          final var createdAt = monthYearFormatter.format(schedule.getCreatedAt());
+          
+          if(schedule.isPresent()) {
+            final var payroll = new PayrollResDto();
 
-          final var returnedPayrollDate = payrollDate+"/"+createdAt;
-
-          payroll.setClientAssignmentId(clientAssignmentId);
-          payroll.setClientName(clientName);
-          payroll.setPayrollDate(returnedPayrollDate);
-          payroll.setScheduleStatus(scheduleStatus);
-
-          payrollRes.add(payroll);
+            final var clientName = clientAssignment.getClientId().getUserName();
+            final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
+            final var scheduleStatus = schedule.get().getScheduleRequestType().getScheduleRequestName();
+            final var monthYearFormatter = DateTimeFormatter.ofPattern("MM/yyyy");
+            final var createdAt = monthYearFormatter.format(schedule.get().getCreatedAt());
+  
+            final var returnedPayrollDate = payrollDate+"/"+createdAt;
+  
+            payroll.setClientAssignmentId(clientAssignmentId);
+            payroll.setClientName(clientName);
+            payroll.setPayrollDate(returnedPayrollDate);
+            payroll.setScheduleStatus(scheduleStatus);
+  
+            payrollRes.add(payroll);
+          }
       });
 
       return payrollRes;
