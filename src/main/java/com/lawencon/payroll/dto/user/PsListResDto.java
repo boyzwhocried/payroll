@@ -11,4 +11,5 @@ public class PsListResDto {
     private String email;
     private String phoneNo;
     private Integer totalClients;
+    private String profilePictureId;
 }
