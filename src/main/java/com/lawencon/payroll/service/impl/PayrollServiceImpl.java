@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.lawencon.payroll.constant.NotificationCodes;
+import com.lawencon.payroll.constant.ScheduleRequestTypes;
 import com.lawencon.payroll.dto.generalResponse.InsertResDto;
 import com.lawencon.payroll.dto.notification.NotificationResDto;
 import com.lawencon.payroll.dto.payroll.PayrollResDto;
@@ -15,6 +16,7 @@ import com.lawencon.payroll.repository.ClientAssignmentRepository;
 import com.lawencon.payroll.repository.NotificationRepository;
 import com.lawencon.payroll.repository.NotificationTemplateRepository;
 import com.lawencon.payroll.repository.ScheduleRepository;
+import com.lawencon.payroll.repository.ScheduleRequestTypeRepository;
 import com.lawencon.payroll.repository.UserRepository;
 import com.lawencon.payroll.service.EmailService;
 import com.lawencon.payroll.service.PayrollService;
@@ -33,6 +35,7 @@ public class PayrollServiceImpl implements PayrollService {
   private final UserRepository userRepository;
   private final ScheduleRepository scheduleRepository;
   private final EmailService emailService;
+  private final ScheduleRequestTypeRepository scheduleRequestTypeRepository;
 
   @Override
   public List<PayrollResDto> getClientPayrolls() {
@@ -44,24 +47,32 @@ public class PayrollServiceImpl implements PayrollService {
           final var clientAssignmentId = clientAssignment.getId();
           final var schedule = scheduleRepository.findFirstByClientAssignmentIdOrderByCreatedAtDesc(clientAssignmentId);
           
-          if(schedule.isPresent()) {
-            final var payroll = new PayrollResDto();
+          final var payroll = new PayrollResDto();
+          final var clientName = clientAssignment.getClientId().getUserName();
+          final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
 
-            final var clientName = clientAssignment.getClientId().getUserName();
-            final var payrollDate = clientAssignment.getClientId().getCompanyId().getPayrollDate();
-            final var scheduleStatus = schedule.get().getScheduleRequestType().getScheduleRequestName();
+          payroll.setClientAssignmentId(clientAssignmentId);
+          payroll.setClientName(clientName);
+
+          if(schedule.isPresent()) {
+            final var scheduleStatusName = schedule.get().getScheduleRequestType().getScheduleRequestName();
+            final var scheduleStatusCode = schedule.get().getScheduleRequestType().getScheduleRequestCode();
             final var monthYearFormatter = DateTimeFormatter.ofPattern("MM/yyyy");
             final var createdAt = monthYearFormatter.format(schedule.get().getCreatedAt());
   
             final var returnedPayrollDate = payrollDate+"/"+createdAt;
   
-            payroll.setClientAssignmentId(clientAssignmentId);
-            payroll.setClientName(clientName);
             payroll.setPayrollDate(returnedPayrollDate);
-            payroll.setScheduleStatus(scheduleStatus);
-  
-            payrollRes.add(payroll);
+            payroll.setScheduleStatusName(scheduleStatusName);
+            payroll.setScheduleStatusCode(scheduleStatusCode);
+          }else {
+            final var scheduleStatus = scheduleRequestTypeRepository.findByScheduleRequestCode(ScheduleRequestTypes.SQT00.name());
+            payroll.setScheduleStatusName(scheduleStatus.getScheduleRequestName());
+            payroll.setScheduleStatusCode(scheduleStatus.getScheduleRequestCode());
+            payroll.setPayrollDate("--/--/--");
           }
+
+          payrollRes.add(payroll);
       });
 
       return payrollRes;

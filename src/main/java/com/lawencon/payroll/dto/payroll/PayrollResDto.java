@@ -8,6 +8,7 @@ import lombok.Setter;
 public class PayrollResDto {
   private String clientAssignmentId;
   private String clientName;
-  private String scheduleStatus;
+  private String scheduleStatusName;
+  private String scheduleStatusCode;
   private String payrollDate;
 }
