@@ -201,6 +201,7 @@ public class UserServiceImpl implements UserService {
             psRes.setEmail(ps.getEmail());
             psRes.setPhoneNo(ps.getPhoneNumber());
             psRes.setTotalClients(clientAssignmentService.getTotalClients(psId));
+            psRes.setProfilePictureId(ps.getProfilePictureId().getId());
 
             psListRes.add(psRes);
         });
@@ -244,11 +245,12 @@ public class UserServiceImpl implements UserService {
             client.setFullName(assignedClient.getUserName());
             client.setEmail(assignedClient.getEmail());
             client.setPhoneNumber(assignedClient.getPhoneNumber());
+            client.setProfilePictureId(assignedClient.getProfilePictureId().getId());
 
             assignedClientsListRes.add(client);
         });
 
-        final var unassignedClientsList = userRepository.findAllByRoleCodeAndIdNot(Roles.RL003.name(), id);
+        final var unassignedClientsList = userRepository.findAllByRoleCode(Roles.RL003.name());
         final var unassignedClientsListRes = new ArrayList<ClientResDto>();
 
         unassignedClientsList.forEach(unassignedClient -> {
@@ -258,6 +260,7 @@ public class UserServiceImpl implements UserService {
             client.setFullName(unassignedClient.getUserName());
             client.setEmail(unassignedClient.getEmail());
             client.setPhoneNumber(unassignedClient.getPhoneNumber());
+            client.setProfilePictureId(unassignedClient.getProfilePictureId().getId());
             
             unassignedClientsListRes.add(client);
         });
@@ -295,7 +298,7 @@ public class UserServiceImpl implements UserService {
     public List<UserResDto> getAllUsersByPsIdExcept(String id) {
         final var usersRes = new ArrayList<UserResDto>();
 
-        final var users = userRepository.findAllByRoleCodeAndIdNot(Roles.RL003.name(), id);
+        final var users = userRepository.findAllByRoleCode(Roles.RL003.name());
 
         users.forEach(user -> {
             final var userRes = new UserResDto();
