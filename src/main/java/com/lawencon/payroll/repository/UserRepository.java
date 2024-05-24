@@ -41,9 +41,8 @@ public interface UserRepository extends JpaRepository<User, String>{
               + "AND cl.id NOT IN "
               + "( "
               + "SELECT ca.clientId FROM ClientAssignment ca "
-              + "WHERE ca.psId.id = :psId "
               + ") ")
-  List<User> findAllByRoleCodeAndIdNot(@Param("roleCode") String roleCode, @Param("psId") String psId);
+  List<User> findAllByRoleCode(@Param("roleCode") String roleCode);
 
   @Query(value ="SELECT us FROM User us "
               + "WHERE us.isActive = TRUE "
